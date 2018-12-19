@@ -15,7 +15,7 @@ public class TestFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         TextView tv = new TextView(getActivity());
-        tv.setText("TEST FRAGMENT");
+        tv.setText("TEST ");
         return tv;
     }
 }

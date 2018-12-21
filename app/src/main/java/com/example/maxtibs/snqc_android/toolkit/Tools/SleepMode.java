@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.example.maxtibs.snqc_android.R;
+import com.example.maxtibs.snqc_android.utilities.Notification;
 
 
 public class SleepMode extends Tool{
@@ -15,6 +16,8 @@ public class SleepMode extends Tool{
     public SleepMode(Context context) {
         this._name = "Mode sommeil";
         this._context = context;
+        Notification notification = new Notification(context, "0", "SleepMode channel", "Used to notify user on sleep time");
+        notification.push(context, "Go to bed", "No no no!");
     }
 
     @Override

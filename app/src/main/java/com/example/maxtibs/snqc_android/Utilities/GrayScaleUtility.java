@@ -1,11 +1,14 @@
 package com.example.maxtibs.snqc_android.Utilities;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.provider.Settings;
+import android.widget.Toast;
 
 import com.example.maxtibs.snqc_android.BuildConfig;
+import com.scottyab.rootbeer.RootBeer;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -21,15 +24,22 @@ public class GrayScaleUtility {
     }
 
     public static void enableSecureSettingsAccess(Context c) {
-        try {
-            Process p = Runtime.getRuntime().exec("su");
-            DataOutputStream os = new DataOutputStream(p.getOutputStream());
-            os.writeBytes("pm grant " + c.getPackageName() + " android.permission.WRITE_SECURE_SETTINGS \n");
-            os.writeBytes("exit\n");
-            os.flush();
+        RootBeer rootBeer = new RootBeer(c);
+        if (rootBeer.isRooted()) {
+            try {
+                Process p = Runtime.getRuntime().exec("su");
+                DataOutputStream os = new DataOutputStream(p.getOutputStream());
+                os.writeBytes("pm grant " + c.getPackageName() + " android.permission.WRITE_SECURE_SETTINGS \n");
+                os.writeBytes("exit\n");
+                os.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        catch (IOException e) {
-            e.printStackTrace();
+        else {
+            // Show toast about device not rooted so unable to set gray scale through developer options
+            String msg = "Votre appareil n'est pas en mode 'root'. Il est donc impossible d'accéder aux options de développement.";
+            Toast.makeText(c, msg, Toast.LENGTH_LONG).show();
         }
     }
 

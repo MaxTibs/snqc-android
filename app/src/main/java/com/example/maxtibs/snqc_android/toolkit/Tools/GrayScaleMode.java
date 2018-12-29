@@ -9,6 +9,7 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import com.example.maxtibs.snqc_android.R;
+import com.example.maxtibs.snqc_android.Utilities.GrayScaleUtility;
 
 
 public class GrayScaleMode extends Tool {
@@ -19,6 +20,10 @@ public class GrayScaleMode extends Tool {
     public GrayScaleMode(Context context) {
         this._name = "Mode ton de gris";
         this._context = context;
+        // Enable the access to secure settings on the build of gray scale mode
+        if (!GrayScaleUtility.hasPermission(this._context)) {
+            GrayScaleUtility.enableSecureSettingsAccess(this._context);
+        }
     }
 
     @Override
@@ -29,12 +34,23 @@ public class GrayScaleMode extends Tool {
 
     @Override
     public void configureHeaderView(View v) {
-        Switch switchGrayMode = v.findViewById(R.id.switchButton);
+        final Switch switchGrayMode = v.findViewById(R.id.switchButton);
+        // Set initial switch's value
+        switchGrayMode.setChecked(GrayScaleUtility.isGrayScaleEnable(this._context));
+
+        final Context contextRef = this._context;
         switchGrayMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                System.out.println("SWITCH STATE = " + isChecked);
+                if (GrayScaleUtility.hasPermission(contextRef)) {
+                    GrayScaleUtility.toggleGrayScale(contextRef, isChecked);
+                }
+                else {
+                    // Put back the switch to unchecked state
+                    switchGrayMode.toggle();
+                    // TODO: Show steps to enable developer options
+                }
             }
         });
     }

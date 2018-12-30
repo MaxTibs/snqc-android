@@ -1,57 +1,45 @@
 package com.example.maxtibs.snqc_android.Utilities;
 
-import android.app.Activity;
-import android.content.ContentResolver;
+import android.app.ActivityManager;
 import android.content.Context;
-import android.content.pm.PackageManager;
+import android.content.Intent;
+import android.os.Build;
 import android.provider.Settings;
-import android.widget.Toast;
-
-import com.example.maxtibs.snqc_android.BuildConfig;
-import com.scottyab.rootbeer.RootBeer;
-
-import java.io.DataOutputStream;
-import java.io.IOException;
 
 public class GrayScaleUtility {
-    private static final String PERMISSION = "android.permission.WRITE_SECURE_SETTINGS";
+    public static int ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE = 5469;
 
-    private static final String DISPLAY_DALTONIZER_ENABLED = "accessibility_display_daltonizer_enabled";
-    private static final String DISPLAY_DALTONIZER         = "accessibility_display_daltonizer";
-
-    public static boolean hasPermission(Context c) {
-        return c.checkCallingOrSelfPermission(PERMISSION) == PackageManager.PERMISSION_GRANTED;
+    public static boolean hasPermission(Context context) {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && Settings.canDrawOverlays(context);
     }
 
-    public static void enableSecureSettingsAccess(Context c) {
-        RootBeer rootBeer = new RootBeer(c);
-        if (rootBeer.isRooted()) {
-            try {
-                Process p = Runtime.getRuntime().exec("su");
-                DataOutputStream os = new DataOutputStream(p.getOutputStream());
-                os.writeBytes("pm grant " + c.getPackageName() + " android.permission.WRITE_SECURE_SETTINGS \n");
-                os.writeBytes("exit\n");
-                os.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
+    public static void askForPermission(Context context) {
+        // Check if Android M or higher
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // Show alert dialog to the user saying a separate permission is needed
+            // Launch the settings activity if the user prefers
+            Intent myIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+            context.startActivity(myIntent);
+        }
+    }
+
+    public static boolean isGrayScaleEnable(Context context, Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
             }
         }
-        else {
-            // Show toast about device not rooted so unable to set gray scale through developer options
-            String msg = "Votre appareil n'est pas en mode 'root'. Il est donc impossible d'accéder aux options de développement.";
-            Toast.makeText(c, msg, Toast.LENGTH_LONG).show();
+        return false;
+    }
+
+    public static void toggleGrayScale(Context context) {
+        Intent intent = new Intent(context, OverlayService.class);
+        // Try to stop the service if it is already running
+        // Otherwise start the service
+        if(!context.stopService(intent)){
+            context.startService(intent);
         }
-    }
-
-    public static boolean isGrayScaleEnable(Context c) {
-        ContentResolver contentResolver = c.getContentResolver();
-        return Settings.Secure.getInt(contentResolver, DISPLAY_DALTONIZER_ENABLED, 0) == 1
-                && Settings.Secure.getInt(contentResolver, DISPLAY_DALTONIZER, 0) == 0;
-    }
-
-    public static void toggleGrayScale(Context c, boolean isGrayScaleEnable) {
-        ContentResolver contentResolver = c.getContentResolver();
-        Settings.Secure.putInt(contentResolver, DISPLAY_DALTONIZER_ENABLED, isGrayScaleEnable ? 1 : 0);
-        Settings.Secure.putInt(contentResolver, DISPLAY_DALTONIZER, isGrayScaleEnable ? 0 : -1);
     }
 }

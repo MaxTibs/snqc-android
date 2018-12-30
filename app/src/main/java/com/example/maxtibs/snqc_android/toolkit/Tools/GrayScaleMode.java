@@ -10,6 +10,7 @@ import android.widget.Switch;
 
 import com.example.maxtibs.snqc_android.R;
 import com.example.maxtibs.snqc_android.Utilities.GrayScaleUtility;
+import com.example.maxtibs.snqc_android.Utilities.OverlayService;
 
 
 public class GrayScaleMode extends Tool {
@@ -22,13 +23,13 @@ public class GrayScaleMode extends Tool {
         this._context = context;
         // Enable the access to secure settings on the build of gray scale mode
         if (!GrayScaleUtility.hasPermission(this._context)) {
-            GrayScaleUtility.enableSecureSettingsAccess(this._context);
+            GrayScaleUtility.askForPermission(this._context);
         }
     }
 
     @Override
-    public View getConfigurationView(Context c) {
-        final LayoutInflater inflater = (LayoutInflater) c.getSystemService(c.LAYOUT_INFLATER_SERVICE);
+    public View getConfigurationView(Context context) {
+        final LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
         return inflater.inflate(this.CONFIGURATION_LAYOUT, null);
     }
 
@@ -36,7 +37,7 @@ public class GrayScaleMode extends Tool {
     public void configureHeaderView(View v) {
         final Switch switchGrayMode = v.findViewById(R.id.switchButton);
         // Set initial switch's value
-        switchGrayMode.setChecked(GrayScaleUtility.isGrayScaleEnable(this._context));
+        switchGrayMode.setChecked(GrayScaleUtility.isGrayScaleEnable(this._context, OverlayService.class));
 
         final Context contextRef = this._context;
         switchGrayMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -44,7 +45,7 @@ public class GrayScaleMode extends Tool {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (GrayScaleUtility.hasPermission(contextRef)) {
-                    GrayScaleUtility.toggleGrayScale(contextRef, isChecked);
+                    GrayScaleUtility.toggleGrayScale(contextRef);
                 }
                 else {
                     // Put back the switch to unchecked state

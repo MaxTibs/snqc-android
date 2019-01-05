@@ -11,7 +11,10 @@ import com.example.maxtibs.snqc_android.R;
 
 public class Notification {
 
-    public int priority = NotificationCompat.PRIORITY_DEFAULT;
+    public NotificationChannel channel;
+    public NotificationCompat.Builder builder;
+
+    public int priority = NotificationCompat.PRIORITY_MAX;
     private String _channelId;
 
     public Notification(Context context, String channelId, String channelName, String channelDesc) {
@@ -19,14 +22,18 @@ public class Notification {
         createNotificationChannel(context, channelId, channelName, channelDesc);
     }
 
-    public void push(Context context, String title, String message) {
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, this._channelId)
+    public void setDefaultNotification(Context context, String title, String message) {
+        this.builder = new NotificationCompat.Builder(context, this._channelId)
+                .setPriority(android.app.Notification.PRIORITY_HIGH)
                 .setSmallIcon(R.drawable.ic_notifications_black_24dp)
                 .setContentTitle(title)
                 .setContentText(message)
-                .setPriority(this.priority);
+                .setDefaults(NotificationCompat.DEFAULT_SOUND | NotificationCompat.DEFAULT_VIBRATE);
+    }
+
+    public void push(Context context) {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.notify(Integer.valueOf(this._channelId), mBuilder.build());
+        notificationManager.notify(Integer.valueOf(this._channelId), this.builder.build());
     }
 
     public void createNotificationChannel(Context context, String id, String chanName, String desc) {
@@ -36,13 +43,14 @@ public class Notification {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name =  chanName;
             String description = desc;
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(id, name, importance);
-            channel.setDescription(description);
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            this.channel = new NotificationChannel(id, name, importance);
+            this.channel.setDescription(description);
+            this.channel.setLockscreenVisibility(android.app.Notification.VISIBILITY_PUBLIC);
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
             NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
+            notificationManager.createNotificationChannel(this.channel);
         }
     }
 

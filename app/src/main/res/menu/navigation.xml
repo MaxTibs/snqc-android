@@ -21,4 +21,9 @@
         android:icon="@drawable/ic_warning"
         android:title="Test" />
 
+    <item
+        android:id="@+id/navigation_debug"
+        android:icon="@drawable/ic_debug"
+        android:title="Debug" />
+
 </menu>

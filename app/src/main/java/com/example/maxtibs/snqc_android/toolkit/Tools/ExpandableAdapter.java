@@ -40,6 +40,7 @@ public class ExpandableAdapter extends ArrayAdapter<Tool> {
         //Set content view
         ConstraintLayout cl = (ConstraintLayout) convertView.findViewById(R.id.content);
         View v = this._tools.get(position).getConfigurationView(_context);
+
         cl.removeAllViews();
         cl.addView(v);
 

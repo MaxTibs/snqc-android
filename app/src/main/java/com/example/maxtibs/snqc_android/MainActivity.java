@@ -26,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_test:
                     getSupportFragmentManager().beginTransaction().replace(R.id.navigation_frame, new TestFragment()).commit();
                     return true;
+                case R.id.navigation_debug:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.navigation_frame, new DebugFragment()).commit();
+                    return true;
             }
             return false;
         }

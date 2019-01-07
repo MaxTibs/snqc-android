@@ -5,18 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.example.maxtibs.snqc_android.R;
-import com.example.maxtibs.snqc_android.utilities.TimeRange;
-
 
 public class BusyMode extends Tool{
 
     public int CONFIGURATION_LAYOUT = R.layout.busymode_config;
-    private Context _context;
     //public TimeRange timeRange;
 
     public BusyMode(Context context) {
-        this._name = "Mode occupé";
-        this._context = context;
+        super("Mode occupé");
     }
 
     @Override

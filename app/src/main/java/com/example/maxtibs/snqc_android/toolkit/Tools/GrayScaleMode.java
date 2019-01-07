@@ -10,11 +10,9 @@ import com.example.maxtibs.snqc_android.R;
 public class GrayScaleMode extends Tool{
 
     public int CONFIGURATION_LAYOUT = R.layout.grayscale_config;
-    private Context _context;
 
     public GrayScaleMode(Context context) {
-        this._name = "Mode ton de gris";
-        this._context = context;
+        super("Mode ton de gris");
     }
 
     @Override

@@ -15,6 +15,7 @@ public class ToolkitFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        //Return toolkit view (list of Tools)
         Toolkit toolkit = new Toolkit(getContext());
         return toolkit.getExpandableListView();
     }

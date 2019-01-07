@@ -16,13 +16,14 @@ public class SleepModeNotification {
 
         Intent snooze = new Intent(context, SleepModeAction.class);
         snooze.setAction(SleepModeAction.SNOOZE);
-        Intent lockScreen = new Intent();
+        Intent lockScreen = new Intent(context, SleepModeAction.class);
+        lockScreen.setAction(SleepModeAction.LOCK_SCREEN);
 
         PendingIntent snoozePending = PendingIntent.getBroadcast(context, 0, snooze, 0);
-        PendingIntent lockScreenPending= PendingIntent.getBroadcast(context, 0, lockScreen, 0);
+        PendingIntent lockScreenPending = PendingIntent.getBroadcast(context, 0, lockScreen, 0);
 
-        notification.builder.addAction(R.drawable.ic_snooze, "Snooze", snoozePending);
-        notification.builder.addAction(R.drawable.ic_snooze, "Lock screen", lockScreenPending);
+        notification.builder.addAction(R.drawable.ic_snooze, "Rappel (15 minutes)", snoozePending);
+        notification.builder.addAction(R.drawable.ic_snooze, "Fermer l'écran", lockScreenPending);
         //.setPriority(android.app.Notification.PRIORITY_HIGH)
         //.setSmallIcon(R.drawable.ic_notifications_black_24dp)
         //.setContentTitle(title)

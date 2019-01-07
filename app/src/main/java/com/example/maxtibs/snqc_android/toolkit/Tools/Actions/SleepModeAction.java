@@ -3,11 +3,14 @@ package com.example.maxtibs.snqc_android.toolkit.Tools.Actions;
 import android.app.AlarmManager;
 import android.app.KeyguardManager;
 import android.app.PendingIntent;
+import android.app.admin.DevicePolicyManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.PowerManager;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.maxtibs.snqc_android.utilities.TimeRange;
 
@@ -20,10 +23,13 @@ public class SleepModeAction extends BroadcastReceiver {
     public static final String TIMEOUT = "SleepModeAction.timeout";
     public static final String REMINDER = "SleepModeAction.reminder";
     public static final String SNOOZE = "SleepModeAction.snooze";
+    public static final String LOCK_SCREEN = "SleepModeAction.lock";
     private static TimeRange timeRange;
     public static PendingIntent phoneUnlockIntent;
     public static PendingIntent timeoutIntent;
     public static PendingIntent reminderIntent;
+
+    public static final int REMINDER_DELAY = 1000*60*15; //15 min
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -55,6 +61,8 @@ public class SleepModeAction extends BroadcastReceiver {
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
                 notificationManager.cancel(0);
                 break;
+            case LOCK_SCREEN:
+                break;
         }
     }
 
@@ -68,10 +76,14 @@ public class SleepModeAction extends BroadcastReceiver {
         intent.setAction(REMINDER);
         SleepModeAction.reminderIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
 
+        Calendar nextReminder = Calendar.getInstance();
+        nextReminder.setTimeInMillis(Calendar.getInstance().getTimeInMillis() + REMINDER_DELAY);
+        Log.d("SleepModeAction", "Next reminder at " + nextReminder.getTime().toString());
+
         //Set next alarm
         alarmManager.setExact(
             AlarmManager.RTC_WAKEUP,
-            Calendar.getInstance().getTimeInMillis() + 1000*10, // 10 min
+            nextReminder.getTimeInMillis(), // 15 min
             SleepModeAction.reminderIntent
         );
     }

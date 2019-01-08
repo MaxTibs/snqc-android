@@ -4,11 +4,11 @@ import android.content.Context;
 import android.view.View;
 import android.widget.ListView;
 
-import com.example.maxtibs.snqc_android.toolkit.Tools.BusyMode;
-import com.example.maxtibs.snqc_android.toolkit.Tools.ExpandableAdapter;
-import com.example.maxtibs.snqc_android.toolkit.Tools.GrayScaleMode;
-import com.example.maxtibs.snqc_android.toolkit.Tools.SleepMode;
-import com.example.maxtibs.snqc_android.toolkit.Tools.Tool;
+import com.example.maxtibs.snqc_android.toolkit.tools.BusyMode;
+import com.example.maxtibs.snqc_android.toolkit.tools.ExpandableAdapter;
+import com.example.maxtibs.snqc_android.toolkit.tools.GrayScaleMode;
+import com.example.maxtibs.snqc_android.toolkit.tools.SleepMode.SleepModeController;
+import com.example.maxtibs.snqc_android.toolkit.tools.Tool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ public class Toolkit {
 
     public Toolkit(Context context) {
         //Create tools : Create tools here
-        Tool sleepMode = new SleepMode(context);
+        Tool sleepMode = new SleepModeController(context);
         Tool busyMode = new BusyMode(context);
         Tool grayscaleMode = new GrayScaleMode(context);
 

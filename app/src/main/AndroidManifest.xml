@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".toolkit.Tools.Actions.SleepModeAction" android:enabled="true">
+        <receiver android:name=".toolkit.tools.SleepMode.SleepModeLifecycle" android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_USER_PRESENT"/>
                 <action android:name="SleepModeAction.timeout"/>

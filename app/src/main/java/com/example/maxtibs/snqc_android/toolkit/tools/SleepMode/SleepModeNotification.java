@@ -1,4 +1,4 @@
-package com.example.maxtibs.snqc_android.toolkit.Tools.Actions;
+package com.example.maxtibs.snqc_android.toolkit.tools.SleepMode;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -14,10 +14,10 @@ public class SleepModeNotification {
         Notification notification = new Notification(context, "0", "Chan", "desc");
         notification.setDefaultNotification(context, "SNQC", "Fermer l'écran");
 
-        Intent snooze = new Intent(context, SleepModeAction.class);
-        snooze.setAction(SleepModeAction.SNOOZE);
-        Intent lockScreen = new Intent(context, SleepModeAction.class);
-        lockScreen.setAction(SleepModeAction.LOCK_SCREEN);
+        Intent snooze = new Intent(context, SleepModeLifecycle.class);
+        snooze.setAction(SleepModeLifecycle.SNOOZE);
+        Intent lockScreen = new Intent(context, SleepModeLifecycle.class);
+        lockScreen.setAction(SleepModeLifecycle.LOCK_SCREEN);
 
         PendingIntent snoozePending = PendingIntent.getBroadcast(context, 0, snooze, 0);
         PendingIntent lockScreenPending = PendingIntent.getBroadcast(context, 0, lockScreen, 0);

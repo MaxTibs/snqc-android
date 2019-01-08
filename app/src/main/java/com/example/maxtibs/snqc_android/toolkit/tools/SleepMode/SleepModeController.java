@@ -1,31 +1,29 @@
-package com.example.maxtibs.snqc_android.toolkit.Tools;
+package com.example.maxtibs.snqc_android.toolkit.tools.SleepMode;
 
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.provider.CalendarContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TimePicker;
 
 import com.example.maxtibs.snqc_android.R;
-import com.example.maxtibs.snqc_android.toolkit.Tools.Actions.SleepModeAction;
+import com.example.maxtibs.snqc_android.toolkit.tools.Tool;
 import com.example.maxtibs.snqc_android.utilities.TimeRange;
 
 import java.util.Calendar;
 
 /**
- * SleepMode Tool
+ * SleepModeController Tool
  * This tool notify user when he's using it's phone in the configured time range
- * Basically, this class is the SleepMode View. When view changes, it modify backend data
+ * Basically, this class is the SleepModeController View. When view changes, it modify backend data
  */
-public class SleepMode extends Tool {
+public class SleepModeController extends Tool {
 
-    public int CONFIGURATION_LAYOUT = R.layout.sleepmode_config;
+    public final int CONFIGURATION_LAYOUT = R.layout.sleepmode_config;
     private View view;
-
-    private final String START_TIME_KEY = "sleepMode_t0";
-    private final String END_TIME_KEY = "sleepMode_t1";
 
     /**
      * Custom TimePickerButton.
@@ -51,14 +49,14 @@ public class SleepMode extends Tool {
             View.OnClickListener onClickListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int hour, minute;
+                    final int hour, minute;
                     //Get current time configured
                     if(min) {
-                        hour = SleepModeAction.getTimeRange().getMin().get(Calendar.HOUR_OF_DAY);
-                        minute = SleepModeAction.getTimeRange().getMin().get(Calendar.MINUTE);
+                        hour = SleepModeModel.getTimeRange(context).getMin().get(Calendar.HOUR_OF_DAY);
+                        minute = SleepModeModel.getTimeRange(context).getMin().get(Calendar.MINUTE);
                     } else {
-                        hour = SleepModeAction.getTimeRange().getMax().get(Calendar.HOUR_OF_DAY);
-                        minute = SleepModeAction.getTimeRange().getMax().get(Calendar.MINUTE);
+                        hour = SleepModeModel.getTimeRange(context).getMax().get(Calendar.HOUR_OF_DAY);
+                        minute = SleepModeModel.getTimeRange(context).getMax().get(Calendar.MINUTE);
                     }
 
                     //Opens up a TimePickerDialog
@@ -75,14 +73,19 @@ public class SleepMode extends Tool {
                          */
                         @Override
                         public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                            //Create time calendar
+                            Calendar time = Calendar.getInstance();
+                            time.set(Calendar.HOUR_OF_DAY, selectedHour);
+                            time.set(Calendar.MINUTE, selectedMinute);
+                            time.set(Calendar.SECOND, 0);
 
                             //Modify selected time
                             if(min) {
                                 //Update backend min
-                                SleepModeAction.setTimeRangeMin(context, selectedHour, selectedMinute);
+                                SleepModeModel.setTimeRangeMin(context, time);
                             } else {
                                 //Update backend max
-                                SleepModeAction.setTimeRangeMax(selectedHour, selectedMinute);
+                                SleepModeModel.setTimeRangeMax(context, time);
                             }
 
                             //Update view
@@ -97,9 +100,9 @@ public class SleepMode extends Tool {
             //Bind onClickListener to Button
             btn.setOnClickListener(onClickListener);
 
-            //Initialise displayed on button
-            if(min) btn.setText(getTime(SleepModeAction.getTimeRange().getMin()));
-            else btn.setText(getTime(SleepModeAction.getTimeRange().getMax()));
+            //Initialize displayed on button
+            if(min) btn.setText(getStringTime(SleepModeModel.getTimeRange(context).getMin()));
+            else btn.setText(getStringTime(SleepModeModel.getTimeRange(context).getMax()));
         }
 
         /**
@@ -126,7 +129,7 @@ public class SleepMode extends Tool {
          * @param time Calendar to display
          * @return String time
          */
-        private String getTime(Calendar time) {
+        private String getStringTime(Calendar time) {
 
             int hour = time.get(Calendar.HOUR_OF_DAY);
             int minute = time.get(Calendar.MINUTE);
@@ -135,39 +138,19 @@ public class SleepMode extends Tool {
         }
     }
 
-    public SleepMode(Context context) {
+    public SleepModeController(Context context) {
         super("Mode sommeil");
-
-        //If time range has not been updated/set yet
-        if(SleepModeAction.getTimeRange() == null) {
-            SharedPreferences sharedPreferences = context.getSharedPreferences("SNQC_DATA", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-
-            //Temporary -> Should be config by user
-            Calendar min = Calendar.getInstance();
-            min.set(Calendar.HOUR_OF_DAY, 20);
-            min.set(Calendar.MINUTE, 0);
-            min.set(Calendar.SECOND, 0);
-
-            Calendar max = Calendar.getInstance();
-            max.set(Calendar.HOUR_OF_DAY, 6);
-            max.set(Calendar.MINUTE, 0);
-            max.set(Calendar.SECOND, 0);
-
-            SleepModeAction.setTimeRange(new TimeRange(min, max));
-
-        }
     }
 
     /**
-     * Returns SleepMode View
+     * Returns SleepModeController View
      * @param c context
      * @return View
      */
     @Override
     public View getConfigurationView(Context c) {
 
-        //Inflate SleepMode View
+        //Inflate SleepModeController View
         final LayoutInflater inflater = (LayoutInflater) c.getSystemService(c.LAYOUT_INFLATER_SERVICE);
         view = inflater.inflate(this.CONFIGURATION_LAYOUT, null);
 

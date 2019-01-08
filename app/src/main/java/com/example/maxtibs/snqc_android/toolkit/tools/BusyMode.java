@@ -1,4 +1,4 @@
-package com.example.maxtibs.snqc_android.toolkit.Tools;
+package com.example.maxtibs.snqc_android.toolkit.tools;
 
 import android.content.Context;
 import android.view.LayoutInflater;

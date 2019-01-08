@@ -1,4 +1,4 @@
-package com.example.maxtibs.snqc_android.toolkit.Tools.Actions;
+package com.example.maxtibs.snqc_android.toolkit.tools.Actions;
 
 import android.app.admin.DeviceAdminReceiver;
 import android.content.Context;

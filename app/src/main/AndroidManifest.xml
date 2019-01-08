@@ -27,6 +27,12 @@
                 <action android:name="SleepModeAction.reminder"/>
             </intent-filter>
         </receiver>
+        <receiver android:name=".toolkit.tools.SleepMode.SleepModeNotification" android:enabled="true">
+            <intent-filter>
+                <action android:name="SleepModeNotification.snooze"/>
+                <action android:name="SleepModeNotification.lock"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

@@ -4,64 +4,88 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.example.maxtibs.snqc_android.utilities.DayTime;
 import com.example.maxtibs.snqc_android.utilities.TimeRange;
 
 import java.util.Calendar;
 
 public class SleepModeModel {
 
-    private static TimeRange timeRange;
+    private static final String FILENAME = "SNQC_DATA";
 
-    private static final String SLEEP_START_TIME = "SleepModeModel.sleep_start";
-    private static final String SLEEP_END_TIME = "SleepModeModel.sleep_end";
+    private static final String START_TIME_HOUR = "SleepModeModel.sleep_start.hour";
+    private static final String START_TIME_MINUTE = "SleepModeModel.sleep_start.minute";
+    private static final String END_TIME_HOUR = "SleepModeModel.sleep_end.hour";
+    private static final String END_TIME_MINUTE = "SleepModeModel.sleep_end.minute";
 
-    private static final int DEFAULT_SLEEP_START_TIME = 0;
-    private static final int DEFAULT_SLEEP_END_TIME = 0;
+    private static final int DEFAULT = 0;
 
     public static TimeRange getTimeRange(Context context) {
 
-        SharedPreferences sharedPreferences = context.getSharedPreferences("SNQC_DATA", Context.MODE_PRIVATE);
+        //Get sharedPreferences to get/edit user's data
+        SharedPreferences sharedPreferences = context.getSharedPreferences(FILENAME, Context.MODE_PRIVATE);
+
+        //Get saved time String xxhxx
+        final int startHour     = sharedPreferences.getInt(START_TIME_HOUR, DEFAULT);
+        final int startMinute   = sharedPreferences.getInt(START_TIME_MINUTE, DEFAULT);
+        final int endHour       = sharedPreferences.getInt(END_TIME_HOUR, DEFAULT);
+        final int endMinute     = sharedPreferences.getInt(END_TIME_MINUTE, DEFAULT);
+
+        DayTime startTime = new DayTime(startHour, startMinute);
+        DayTime endTime = new DayTime(endHour, endMinute);
+
+        //Build range from daytimes
+        return new TimeRange(startTime, endTime);
+    }
+
+    public static void setTimeRangeMin(Context context, int hour, int minute) {
+
+        //Update shared preference
+        SharedPreferences.Editor editor = getSPEditor(context);
+        editor.putInt(START_TIME_HOUR, hour);
+        editor.putInt(START_TIME_MINUTE, minute);
+        editor.commit();
+
+        //Debug
+        Calendar debug = Calendar.getInstance();
+        debug.set(Calendar.HOUR_OF_DAY, hour);
+        debug.set(Calendar.MINUTE, minute);
+        Log.d("SleepModeModel", "Changing min to " + debug.getTime().toString());
+
+        //Cancel & Re-build alarms
+        notifyLifecycle(context);
+
+    }
+
+    public static void setTimeRangeMax(Context context, int hour, int minute) {
+
+        //Update shared preference
+        SharedPreferences.Editor editor = getSPEditor(context);
+        editor.putInt(END_TIME_HOUR, hour);
+        editor.putInt(END_TIME_MINUTE, minute);
+        editor.commit();
+
+        //Debug
+        Calendar debug = Calendar.getInstance();
+        debug.set(Calendar.HOUR_OF_DAY, hour);
+        debug.set(Calendar.MINUTE, minute);
+        Log.d("SleepModeModel", "Changing max to " + debug.getTime().toString());
+
+        //Cancel & Re-build alarms
+        notifyLifecycle(context);
+
+    }
+
+    /**
+     * Returns SharedPreference editor from contenxt
+     * @param context current context
+     * @return SP.editor
+     */
+    private static SharedPreferences.Editor getSPEditor(Context context) {
+        //Get sharedPreferences to get/edit user's data
+        SharedPreferences sharedPreferences = context.getSharedPreferences(FILENAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        //Get saved time in ms
-        final int sleep_start_time  = sharedPreferences.getInt(SLEEP_START_TIME, DEFAULT_SLEEP_START_TIME);
-        final int sleep_end_time    = sharedPreferences.getInt(SLEEP_END_TIME, DEFAULT_SLEEP_END_TIME);
-
-        //If start & end == 0, TimeRange is null
-        if(sleep_start_time == 0 && sleep_end_time == 0) {
-            Log.d("SleepModeModel", "getTimeRange: No range defined. Returning null");
-            return null;
-        }
-        else {
-            Calendar min = Calendar.getInstance();
-            Calendar max = Calendar.getInstance();
-            min.setTimeInMillis(sleep_start_time);
-            max.setTimeInMillis(sleep_end_time);
-
-            //Using old range to build today range
-            return new TimeRange(min, max);
-        }
-    }
-
-
-    public static void setTimeRangeMin(Context context, Calendar min) {
-
-        //Create min value for today. This let TimeRange adjust Max value
-        timeRange.setMin(min);
-        Log.d("SleepModeModel", "Changing min to " + timeRange.getMin().getTime().toString());
-
-        //TODO: Cancel & Re-build alarms
-        notifyLifecycle(context);
-
-    }
-    public static void setTimeRangeMax(Context context, Calendar max) {
-
-        //Create max value from today. Let timeRane adjust it from min.
-        timeRange.setMax(max);
-
-        //TODO: Cancel & Re-build alarms
-        notifyLifecycle(context);
-
+        return editor;
     }
 
     /**

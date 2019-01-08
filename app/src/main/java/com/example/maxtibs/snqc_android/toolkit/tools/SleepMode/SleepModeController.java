@@ -41,7 +41,7 @@ public class SleepModeController extends Tool {
          */
         private DatePickerButton(final View view, final int bindLayout, final Context context, final Boolean min) {
 
-            //Create button and config
+            //Create button and configure it
             Button btn = view.findViewById(bindLayout);
             btn.setAllCaps(false);
 
@@ -52,11 +52,11 @@ public class SleepModeController extends Tool {
                     final int hour, minute;
                     //Get current time configured
                     if(min) {
-                        hour = SleepModeModel.getTimeRange(context).getMin().get(Calendar.HOUR_OF_DAY);
-                        minute = SleepModeModel.getTimeRange(context).getMin().get(Calendar.MINUTE);
+                        hour = SleepModeModel.getTimeRange(context).getMin().getHour();
+                        minute = SleepModeModel.getTimeRange(context).getMin().getMinute();
                     } else {
-                        hour = SleepModeModel.getTimeRange(context).getMax().get(Calendar.HOUR_OF_DAY);
-                        minute = SleepModeModel.getTimeRange(context).getMax().get(Calendar.MINUTE);
+                        hour = SleepModeModel.getTimeRange(context).getMax().getHour();
+                        minute = SleepModeModel.getTimeRange(context).getMax().getMinute();
                     }
 
                     //Opens up a TimePickerDialog
@@ -80,16 +80,19 @@ public class SleepModeController extends Tool {
                             time.set(Calendar.SECOND, 0);
 
                             //Modify selected time
+                            String timeStr;
                             if(min) {
                                 //Update backend min
-                                SleepModeModel.setTimeRangeMin(context, time);
+                                SleepModeModel.setTimeRangeMin(context, selectedHour, selectedMinute);
+                                timeStr = SleepModeModel.getTimeRange(context).getMin().getStringTime();
                             } else {
                                 //Update backend max
-                                SleepModeModel.setTimeRangeMax(context, time);
+                                SleepModeModel.setTimeRangeMax(context, selectedHour, selectedMinute);
+                                timeStr = SleepModeModel.getTimeRange(context).getMax().getStringTime();
                             }
 
                             //Update view
-                            ((Button)view.findViewById(bindLayout)).setText(intTimeToString(selectedHour, selectedMinute));
+                            ((Button)view.findViewById(bindLayout)).setText(timeStr);
                         }
                     }, hour, minute, true);
                     mTimePicker.setTitle("Choisissez une heure");
@@ -101,40 +104,8 @@ public class SleepModeController extends Tool {
             btn.setOnClickListener(onClickListener);
 
             //Initialize displayed on button
-            if(min) btn.setText(getStringTime(SleepModeModel.getTimeRange(context).getMin()));
-            else btn.setText(getStringTime(SleepModeModel.getTimeRange(context).getMax()));
-        }
-
-        /**
-         * Transform int time to displayable String value
-         * @param hour Hour in int
-         * @param minute Minute in int
-         * @return Displayable String Time
-         */
-        private String intTimeToString(int hour, int minute) {
-            String sHour = String.valueOf(hour);
-            String sMinute;
-
-            //If minute is one digit
-            if (minute <= 9) {
-                sMinute = "0" + String.valueOf(minute); //Make it 2 digits
-            }
-            else sMinute = String.valueOf(minute); //It is already 2 digits
-
-            return sHour + "h" + sMinute;
-        }
-
-        /**
-         * Returns String time of Calendar
-         * @param time Calendar to display
-         * @return String time
-         */
-        private String getStringTime(Calendar time) {
-
-            int hour = time.get(Calendar.HOUR_OF_DAY);
-            int minute = time.get(Calendar.MINUTE);
-
-            return intTimeToString(hour, minute);
+            if(min) btn.setText(SleepModeModel.getTimeRange(context).getMin().getStringTime());
+            else btn.setText(SleepModeModel.getTimeRange(context).getMax().getStringTime());
         }
     }
 

@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
+import com.example.maxtibs.snqc_android.utilities.DayTime;
 import com.example.maxtibs.snqc_android.utilities.TimeRange;
 
 import java.util.Calendar;
@@ -16,6 +17,8 @@ import java.util.Calendar;
 import static android.content.Intent.ACTION_USER_PRESENT;
 
 public class SleepModeLifecycle extends BroadcastReceiver {
+
+    private static final String DTAG = "SleepModeLifeCycle";
 
     //Actions
     public static final String TIMEOUT = "SleepModeLifecycle.timeout";
@@ -30,38 +33,50 @@ public class SleepModeLifecycle extends BroadcastReceiver {
 
     public static final int REMINDER_DELAY = 1000*60*15; //15 min
 
+    //State
     @Override
     public void onReceive(Context context, Intent intent) {
 
         //Error
         if(SleepModeModel.getTimeRange(context) == null) {
-            Log.e("SleepModeLifecycle", "No timeRange has been set. Return.");
+            Log.e(DTAG, "No timeRange has been set. Return.");
             return;
         }
 
-        //Action handlers
-        String intentAction = intent.getAction();
-        if(intentAction == null) return;
-        switch (intentAction) {
-            case ACTION_USER_PRESENT: //Android event: Phone got unlocked
-                phoneUnlockAction(context);
-                break;
-            case TIMEOUT: //Custom event: SleepModeController alarm timeout
-                timeoutAction(context);
-                break;
-            case REMINDER: //Custom event: Reminder alarm timeout
-                //Check if phone unlock. If so, notify user to close its phone
-                if(phoneIsUnlock(context)) {
-                    SleepModeNotification.notify(context);
-                    setReminder(context);
-                }
-                break;
-            case SNOOZE:
-                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-                notificationManager.cancel(0);
-                break;
-            case LOCK_SCREEN:
-                break;
+        //First, we need to check if we're in range
+        TimeRange tr = SleepModeModel.getTimeRange(context);
+        Calendar now = Calendar.getInstance();
+        Calendar min = dayTimeNow(tr.getMin());
+        Calendar max = dayTimeNow(tr.getMax());
+        if(max.compareTo(min) < 0) max.add(Calendar.DAY_OF_YEAR, 1); //Fix range
+        if(now.compareTo(min) >= 0 && now.compareTo(max) < 0) {
+            //Action handlers
+            String intentAction = intent.getAction();
+            if (intentAction == null) return;
+            switch (intentAction) {
+                case ACTION_USER_PRESENT: //Android event: Phone got unlocked
+                    //phoneUnlockAction(context);
+                    break;
+                case TIMEOUT: //Custom event: SleepModeController alarm timeout
+                    timeoutAction(context);
+                    break;
+                case REMINDER: //Custom event: Reminder alarm timeout
+                    //Check if phone unlock. If so, notify user to close its phone
+                    if (phoneIsUnlock(context)) {
+                        SleepModeNotification.notify(context);
+                        setReminder(context);
+                    }
+                    break;
+                case SNOOZE:
+                    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+                    notificationManager.cancel(0);
+                    break;
+                case LOCK_SCREEN:
+                    break;
+            }
+        } else { //Blackhole. Every event that enters here will never schedule anything next
+            //Debug
+            Log.d(DTAG, "Now not in range");
         }
     }
 
@@ -82,7 +97,7 @@ public class SleepModeLifecycle extends BroadcastReceiver {
         //Next reminder is now + 15 minutes
         Calendar nextReminder = Calendar.getInstance();
         nextReminder.setTimeInMillis(Calendar.getInstance().getTimeInMillis() + REMINDER_DELAY);
-        Log.d("SleepModeLifecycle", "Next reminder at " + nextReminder.getTime().toString());
+        Log.d(DTAG, "Next reminder at " + nextReminder.getTime().toString());
 
         //Set next alarm
         alarmManager.setExact(
@@ -102,27 +117,6 @@ public class SleepModeLifecycle extends BroadcastReceiver {
     }
 
     /**
-     * Tells if time 'now' is in time range
-     * @Return
-     */
-    private Boolean nowIsInRange(Context context) {
-        Calendar now = Calendar.getInstance();
-        return SleepModeModel.getTimeRange(context).isInRange(now); //Compare now to timeRange
-    }
-
-    /**
-     * Defines the action to do when receiving phone unlock event
-     * @param context
-     */
-    private void phoneUnlockAction(Context context) { //keygard is gone. No need to check if phone is unlock. It is.
-        //Check if now is in time range. If so, notify.
-        if(nowIsInRange(context)) {
-            SleepModeNotification.notify(context);
-            //Recall in x min
-        }
-    }
-
-    /**
      * Defines the action to do when timeout happen
      * @param context
      */
@@ -136,9 +130,10 @@ public class SleepModeLifecycle extends BroadcastReceiver {
         }
 
         //Schedule next timeoutAction. Before, increment 1 day
-        SleepModeModel.incrementTimeRange();
+        Calendar startTime = dayTimeNow(SleepModeModel.getTimeRange(context).getMin());
+        startTime.add(Calendar.DAY_OF_YEAR, 1); //INCREMENT
 
-        Log.d("SleepModeLifecycle", now.getTime().toString() + " \n Scheduling next timeout alarm at " + SleepModeModel.getTimeRange(context).getMin().getTime().toString());
+        Log.d(DTAG, now.getTime().toString() + " \n Scheduling next timeout alarm at " + startTime.getTime().toString());
 
         //Cancel alarm if already exists
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -152,7 +147,7 @@ public class SleepModeLifecycle extends BroadcastReceiver {
         //Set next alarm
         alarmManager.setExact(
             AlarmManager.RTC_WAKEUP,
-            SleepModeModel.getTimeRange(context).getMin().getTimeInMillis(),
+                startTime.getTimeInMillis(),
             SleepModeLifecycle.timeoutIntent
         );
     }
@@ -168,7 +163,10 @@ public class SleepModeLifecycle extends BroadcastReceiver {
         //Cancel alarm if already exists
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(SleepModeLifecycle.timeoutIntent);
-        Log.d("SleepModeLifecycle", "Cancelling old alarm");
+        Log.d(DTAG, "Cancelling old alarm");
+
+        //Get time now from DayTime
+        Calendar startTime = dayTimeNow(SleepModeModel.getTimeRange(context).getMin());
 
         //Re-create alarm
         Intent intent = new Intent(context, SleepModeLifecycle.class);
@@ -176,10 +174,17 @@ public class SleepModeLifecycle extends BroadcastReceiver {
         SleepModeLifecycle.timeoutIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
         alarmManager.setExact(
                 AlarmManager.RTC_WAKEUP,
-                SleepModeModel.getTimeRange(context).getMin().getTimeInMillis(),
+                startTime.getTimeInMillis(),
                 SleepModeLifecycle.timeoutIntent
         );
-        Log.d("SleepModeLifecycle", "Creating new alarm");
+        Log.d(DTAG, "Creating new alarm");
+    }
 
+    private static Calendar dayTimeNow(DayTime dayTime) {
+        Calendar now = Calendar.getInstance();
+        now.set(Calendar.HOUR_OF_DAY, dayTime.getHour());
+        now.set(Calendar.MINUTE, dayTime.getMinute());
+        now.set(Calendar.SECOND, 0);
+        return now;
     }
 }

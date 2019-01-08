@@ -15,9 +15,9 @@ public class SleepModeNotification {
         notification.setDefaultNotification(context, "SNQC", "Fermer l'écran");
 
         Intent snooze = new Intent(context, SleepModeLifecycle.class);
-        snooze.setAction(SleepModeLifecycle.SNOOZE);
+        snooze.setAction("snooze");
         Intent lockScreen = new Intent(context, SleepModeLifecycle.class);
-        lockScreen.setAction(SleepModeLifecycle.LOCK_SCREEN);
+        lockScreen.setAction("lock_screen");
 
         PendingIntent snoozePending = PendingIntent.getBroadcast(context, 0, snooze, 0);
         PendingIntent lockScreenPending = PendingIntent.getBroadcast(context, 0, lockScreen, 0);

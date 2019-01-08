@@ -2,12 +2,9 @@ package com.example.maxtibs.snqc_android.toolkit.tools.SleepMode;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
-
 import com.example.maxtibs.snqc_android.utilities.DayTime;
 import com.example.maxtibs.snqc_android.utilities.TimeRange;
 
-import java.util.Calendar;
 
 public class SleepModeModel {
 
@@ -46,15 +43,8 @@ public class SleepModeModel {
         editor.putInt(START_TIME_MINUTE, minute);
         editor.commit();
 
-        //Debug
-        Calendar debug = Calendar.getInstance();
-        debug.set(Calendar.HOUR_OF_DAY, hour);
-        debug.set(Calendar.MINUTE, minute);
-        Log.d("SleepModeModel", "Changing min to " + debug.getTime().toString());
-
         //Cancel & Re-build alarms
         notifyLifecycle(context);
-
     }
 
     public static void setTimeRangeMax(Context context, int hour, int minute) {
@@ -65,15 +55,8 @@ public class SleepModeModel {
         editor.putInt(END_TIME_MINUTE, minute);
         editor.commit();
 
-        //Debug
-        Calendar debug = Calendar.getInstance();
-        debug.set(Calendar.HOUR_OF_DAY, hour);
-        debug.set(Calendar.MINUTE, minute);
-        Log.d("SleepModeModel", "Changing max to " + debug.getTime().toString());
-
         //Cancel & Re-build alarms
         notifyLifecycle(context);
-
     }
 
     /**
@@ -92,7 +75,6 @@ public class SleepModeModel {
      * Notify SleepModeLifecycle
      */
     private static void notifyLifecycle(Context context) {
-        //TODO: Notify SleepModeLifecycle to cancel & re-build alarms
         SleepModeLifecycle.cancelAndRebuild(context);
     }
 

@@ -1,33 +1,31 @@
 package com.example.maxtibs.snqc_android.toolkit.Tools;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.maxtibs.snqc_android.R;
-
+import com.example.maxtibs.snqc_android.toolkit.GrayScaleStepper.GrayScaleStepperActivity;
 
 public class GrayScaleMode extends Tool {
 
     public int CONFIGURATION_LAYOUT = R.layout.grayscale_config;
     private Context _context;
+    private View _view;
 
     public GrayScaleMode(Context context) {
         this._name = "Mode ton de gris";
         this._context = context;
+        this._view = null;
     }
 
     @Override
     public View getConfigurationView(Context context) {
         final LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-        return inflater.inflate(this.CONFIGURATION_LAYOUT, null);
+        return this._view = inflater.inflate(this.CONFIGURATION_LAYOUT, null);
     }
 
     @Override
@@ -38,24 +36,18 @@ public class GrayScaleMode extends Tool {
             // Remove the switch from the view
             ((ViewGroup) ll).removeViewAt(((ViewGroup) ll).getChildCount() - 1);
 
-            // Create and set the button
-            Button btn = new Button(this._context);
-            btn.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-            btn.setBackground(this._context.getResources().getDrawable(R.drawable.ic_help));
-            btn.setTag("grayScaleHelp");
+            final Context contextRef = this._context;
 
-            btn.setOnClickListener(new View.OnClickListener() {
+            // Set the onClick listener for the icon
+            this._view.findViewById(R.id.help_icon).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    System.out.println("BOO");
+                    // Start the stepper activity
+                    Intent intent = new Intent();
+                    intent.setClass(contextRef, GrayScaleStepperActivity.class);
+                    contextRef.startActivity(intent);
                 }
             });
-
-            ((ViewGroup) ll).addView(btn);
         }
     }
-
-//    public void activateGrayScaleStepper() {
-//        System.out.println("BOO");
-//    }
 }

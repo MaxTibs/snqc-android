@@ -32,4 +32,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.robertlevonyan.view:MaterialExpansionPanel:1.2.0'
     implementation 'com.github.Jay-Goo:RangeSeekBar:v2.0.4'
+    implementation 'com.stepstone.stepper:material-stepper:4.3.1'
 }

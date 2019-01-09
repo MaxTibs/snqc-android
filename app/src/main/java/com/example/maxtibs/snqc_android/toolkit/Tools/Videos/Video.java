@@ -1,16 +1,18 @@
-package com.example.samue_074d5tq.videofluxfinalversion;
+package com.example.maxtibs.snqc_android.toolkit.Tools.Videos;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaMetadataRetriever;
-import android.net.Uri;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.VideoView;
+
+import com.example.maxtibs.snqc_android.R;
 
 import java.util.HashMap;
 
@@ -20,9 +22,9 @@ public class Video {
     public String url;
     public String title;
 
-    private final int TITLE_ID = R.id.title;
+    private final int TITLE_ID = R.id.video_title;
     //private final int PLAY_BTN_ID = R.id.btn_play_pause;
-    private final int IMAGE_VIEW_ID = R.id.imageView;
+    private final int IMAGE_VIEW_ID = R.id.video_imageView;
 
     private boolean isPlaying = false;
     private ImageView imageView;
@@ -40,11 +42,6 @@ public class Video {
         setTitle(view);
         initVideoView(context, view);
         //initImageButton(view);
-
-        //Modify view attributes
-        VideoView videoView = view.findViewById(R.id.imageView);
-        //ImageButton imageButton = view.findViewById(R.id.btn_play_pause);
-        TextView title = view.findViewById(R.id.title);
 
         return view;
     }
@@ -67,6 +64,7 @@ public class Video {
         this.imageView.setBackground(bitmapDrawable);
 
     }
+
 
     /*private void initImageButton(View view) {
         final ImageButton playBtn = view.findViewById(this.PLAY_BTN_ID);

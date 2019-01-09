@@ -1,4 +1,4 @@
-package com.example.samue_074d5tq.videofluxfinalversion;
+package com.example.maxtibs.snqc_android.toolkit.Tools.Videos;
 
 import android.content.Context;
 import android.view.View;

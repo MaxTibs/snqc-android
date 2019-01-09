@@ -1,16 +1,17 @@
 package com.example.maxtibs.snqc_android.toolkit.Tools;
 
-import android.app.Activity;
 import android.content.Context;
-import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.example.maxtibs.snqc_android.R;
-import com.example.maxtibs.snqc_android.Utilities.GrayScaleUtility;
-import com.example.maxtibs.snqc_android.Utilities.OverlayService;
 
 
 public class GrayScaleMode extends Tool {
@@ -21,10 +22,6 @@ public class GrayScaleMode extends Tool {
     public GrayScaleMode(Context context) {
         this._name = "Mode ton de gris";
         this._context = context;
-        // Enable the access to secure settings on the build of gray scale mode
-        if (!GrayScaleUtility.hasPermission(this._context)) {
-            GrayScaleUtility.askForPermission(this._context);
-        }
     }
 
     @Override
@@ -35,24 +32,30 @@ public class GrayScaleMode extends Tool {
 
     @Override
     public void configureHeaderView(View v) {
-        final Switch switchGrayMode = v.findViewById(R.id.switchButton);
-        // Set initial switch's value
-        switchGrayMode.setChecked(GrayScaleUtility.isGrayScaleEnable(this._context, OverlayService.class));
+        // Check first if we are in the correct view (Otherwise, it would modify 2 views)
+        if (((TextView) v.findViewById(R.id.name_fonctionality)).getText() == this._name) {
+            View ll = v.findViewById(R.id.header_view_ll);
+            // Remove the switch from the view
+            ((ViewGroup) ll).removeViewAt(((ViewGroup) ll).getChildCount() - 1);
 
-        final Context contextRef = this._context;
-        switchGrayMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            // Create and set the button
+            Button btn = new Button(this._context);
+            btn.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+            btn.setBackground(this._context.getResources().getDrawable(R.drawable.ic_help));
+            btn.setTag("grayScaleHelp");
 
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (GrayScaleUtility.hasPermission(contextRef)) {
-                    GrayScaleUtility.toggleGrayScale(contextRef);
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    System.out.println("BOO");
                 }
-                else {
-                    // Put back the switch to unchecked state
-                    switchGrayMode.toggle();
-                    // TODO: Show steps to enable developer options
-                }
-            }
-        });
+            });
+
+            ((ViewGroup) ll).addView(btn);
+        }
     }
+
+//    public void activateGrayScaleStepper() {
+//        System.out.println("BOO");
+//    }
 }

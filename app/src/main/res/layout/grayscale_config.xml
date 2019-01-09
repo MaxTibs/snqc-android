@@ -27,6 +27,13 @@
             android:text="Modifie les couleurs de l'écran pour qu'elles soient en ton de gris"
             android:id="@+id/description"/>
 
+        <!--<ImageButton-->
+            <!--android:id="@+id/help_icon"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@drawable/ic_help"-->
+            <!--android:onClick="activateGrayScaleStepper"/>-->
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

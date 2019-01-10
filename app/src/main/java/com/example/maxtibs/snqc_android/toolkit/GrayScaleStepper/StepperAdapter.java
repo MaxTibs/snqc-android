@@ -39,12 +39,7 @@ public class StepperAdapter extends AbstractFragmentStepAdapter {
                 return step2;
 
             default:
-                // Default step is the first step
-                final DevConfigStep step = new DevConfigStep();
-                Bundle b = new Bundle();
-                b.putInt(CURRENT_STEP_POSITION_KEY, position);
-                step.setArguments(b);
-                return step;
+                throw new IllegalArgumentException("Unsupported position: " + position);
         }
     }
 
@@ -68,10 +63,7 @@ public class StepperAdapter extends AbstractFragmentStepAdapter {
                         .create();
 
             default:
-                // Default step is the first step
-                return new StepViewModel.Builder(context)
-                        .setTitle(R.string.grayscale_stepper_first_step_title)
-                        .create();
+                throw new IllegalArgumentException("Unsupported position: " + position);
         }
     }
 }

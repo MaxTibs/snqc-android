@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.maxtibs.snqc_android.R;
 import com.example.maxtibs.snqc_android.Utilities.GrayScaleUtility;
@@ -30,7 +31,8 @@ public class DevConfigStep extends Fragment implements Step {
     @Override
     public VerificationError verifyStep() {
         //return null if the user can go to the next step, create a new VerificationError instance otherwise
-        return null;
+        return GrayScaleUtility.isDeveloperOptionsEnabled(getContext()) ? null :
+                new VerificationError("Vous devez activer les options de développement avant de continuer!");
     }
 
     @Override
@@ -40,7 +42,7 @@ public class DevConfigStep extends Fragment implements Step {
 
     @Override
     public void onError(@NonNull VerificationError error) {
-        //handle error inside of the fragment, e.g. show error on EditText
+        Toast.makeText(getContext(), error.getErrorMessage(), Toast.LENGTH_LONG).show();
     }
 
     private void openDeviceInfo(View v) {

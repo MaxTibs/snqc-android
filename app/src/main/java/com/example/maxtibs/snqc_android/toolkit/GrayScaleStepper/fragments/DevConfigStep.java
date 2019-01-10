@@ -8,17 +8,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.maxtibs.snqc_android.R;
+import com.example.maxtibs.snqc_android.Utilities.GrayScaleUtility;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
 
-public class StepFragmentSample extends Fragment implements Step {
+public class DevConfigStep extends Fragment implements Step {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activate_dev_config, container, false);
-
-        //initialize your UI
-
+        final DevConfigStep devConfigStepRef = this;
+        v.findViewById(R.id.openDeviceInfoButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                devConfigStepRef.openDeviceInfo(v);
+            }
+        });
         return v;
     }
 
@@ -38,4 +43,7 @@ public class StepFragmentSample extends Fragment implements Step {
         //handle error inside of the fragment, e.g. show error on EditText
     }
 
+    private void openDeviceInfo(View v) {
+        GrayScaleUtility.openDeviceInfoParameter(v.getContext());
+    }
 }

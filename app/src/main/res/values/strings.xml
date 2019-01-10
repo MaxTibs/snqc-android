@@ -4,4 +4,24 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_test">Test</string>
+    <string name="title_description">Description</string>
+    <!-- Gray scale strings -->
+    <string name="grayscale_description">Modifie les couleurs de l\'écran pour qu\'elles soient en ton de gris</string>
+    <!-- Gray scale stepper strings -->
+    <string name="grayscale_stepper_first_step_title">Options de développement</string>
+    <string name="grayscale_stepper_first_step_description">
+        Tout d\'abord, vous devez activer les options de développement.
+        Pour cela, vous devez aller dans vos paramètres. Une fois les paramètres ouverts,
+        vous devez cliquer sur "Information sur le logiciel".
+        Une fois cela faites, vous devez cliquer 7 fois sur le numéro de version
+        pour activer les options de développement.
+    </string>
+    <string name="grayscale_stepper_first_step_button">Ourvir les paramètres</string>
+
+    <string name="grayscale_stepper_second_step_title">Activer le mode monochrome</string>
+    <string name="grayscale_stepper_second_step_description">
+        Recherchez le paramètre "Simuler espace de couleur" et choisissez l\'option "Monochrome".
+    </string>
+    <string name="grayscale_stepper_second_step_button">Activer le mode monochrome</string>
+    <!-- END - Gray scale strings -->
 </resources>

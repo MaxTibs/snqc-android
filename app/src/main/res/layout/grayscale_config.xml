@@ -13,7 +13,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
-            android:text="Description"
+            android:text="@string/title_description"
             android:textStyle="bold"
             android:textSize="16dp"
             android:textColor="@color/colorPrimaryDark" />
@@ -22,7 +22,7 @@
             android:layout_marginStart="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Modifie les couleurs de l'écran pour qu'elles soient en ton de gris"
+            android:text="@string/grayscale_description"
             android:id="@+id/description"/>
 
         <FrameLayout

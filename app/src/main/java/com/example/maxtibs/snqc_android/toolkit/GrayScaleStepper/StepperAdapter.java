@@ -7,7 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 
 import com.example.maxtibs.snqc_android.R;
-import com.example.maxtibs.snqc_android.toolkit.GrayScaleStepper.fragments.StepFragmentSample;
+import com.example.maxtibs.snqc_android.toolkit.GrayScaleStepper.fragments.ActivateMonochromeStep;
+import com.example.maxtibs.snqc_android.toolkit.GrayScaleStepper.fragments.DevConfigStep;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter;
 import com.stepstone.stepper.viewmodel.StepViewModel;
@@ -22,23 +23,55 @@ public class StepperAdapter extends AbstractFragmentStepAdapter {
 
     @Override
     public Step createStep(int position) {
-        final StepFragmentSample step = new StepFragmentSample();
-        Bundle b = new Bundle();
-        b.putInt(CURRENT_STEP_POSITION_KEY, position);
-        step.setArguments(b);
-        return step;
+        switch (position) {
+            case 0:
+                final DevConfigStep step1 = new DevConfigStep();
+                Bundle b1 = new Bundle();
+                b1.putInt(CURRENT_STEP_POSITION_KEY, position);
+                step1.setArguments(b1);
+                return step1;
+
+            case 1:
+                final ActivateMonochromeStep step2 = new ActivateMonochromeStep();
+                Bundle b2 = new Bundle();
+                b2.putInt(CURRENT_STEP_POSITION_KEY, position);
+                step2.setArguments(b2);
+                return step2;
+
+            default:
+                // Default step is the first step
+                final DevConfigStep step = new DevConfigStep();
+                Bundle b = new Bundle();
+                b.putInt(CURRENT_STEP_POSITION_KEY, position);
+                step.setArguments(b);
+                return step;
+        }
     }
 
     @Override
     public int getCount() {
-        return 3;
+        return 2;
     }
 
     @NonNull
     @Override
     public StepViewModel getViewModel(@IntRange(from = 0) int position) {
-        return new StepViewModel.Builder(context)
-                .setTitle("Activer les options de développement")
-                .create();
+        switch (position) {
+            case 0:
+                return new StepViewModel.Builder(context)
+                        .setTitle(R.string.grayscale_stepper_first_step_title)
+                        .create();
+
+            case 1:
+                return new StepViewModel.Builder(context)
+                        .setTitle(R.string.grayscale_stepper_second_step_title)
+                        .create();
+
+            default:
+                // Default step is the first step
+                return new StepViewModel.Builder(context)
+                        .setTitle(R.string.grayscale_stepper_first_step_title)
+                        .create();
+        }
     }
 }

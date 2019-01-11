@@ -21,6 +21,11 @@ public class SleepMode extends Tool{
     }
 
     @Override
+    public void configureHeaderView(View v) {
+
+    }
+
+    @Override
     public View getConfigurationView(Context c) {
         final LayoutInflater inflater = (LayoutInflater) c.getSystemService(c.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(this.CONFIGURATION_LAYOUT, null);

@@ -8,5 +8,7 @@ public abstract class Tool {
 
     protected abstract View getConfigurationView(Context c);
 
+    public abstract void configureHeaderView(View view);
+
     public String getFonctionnalityName() { return this._name; }
 }

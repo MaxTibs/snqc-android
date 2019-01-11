@@ -33,17 +33,18 @@ public class ExpandableAdapter extends ArrayAdapter<Tool> {
         //Create basic layout (basically header)
         if(convertView == null) {
             convertView = inflater.inflate(R.layout.expandable_pannel, null, false);
-            TextView tv = (TextView)convertView.findViewById(R.id.name_fonctionality);
+            TextView tv = convertView.findViewById(R.id.name_fonctionality);
             tv.setText(t._name);
         }
 
         //Set content view
-        ConstraintLayout cl = (ConstraintLayout) convertView.findViewById(R.id.content);
-        View v = this._tools.get(position).getConfigurationView(_context);
+        ConstraintLayout cl = convertView.findViewById(R.id.content);
+        Tool tool = this._tools.get(position);
+        View v = tool.getConfigurationView(_context);
         cl.removeAllViews();
         cl.addView(v);
+        tool.configureHeaderView(convertView);
 
         return convertView;
-
     }
 }

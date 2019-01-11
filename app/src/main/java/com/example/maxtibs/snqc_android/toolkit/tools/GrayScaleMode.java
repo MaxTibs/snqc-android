@@ -2,8 +2,6 @@ package com.example.maxtibs.snqc_android.toolkit.tools;
 
 import android.content.Context;
 import android.content.Intent;
-import android.view.LayoutInflater;
-import android.view.View;
 
 import com.example.maxtibs.snqc_android.MainActivity;
 import com.example.maxtibs.snqc_android.R;
@@ -11,7 +9,7 @@ import com.example.maxtibs.snqc_android.R;
 
 public class GrayScaleMode{
 
-    public int LAYOUT = R.layout.grayscale_config;
+    public int LAYOUT = R.layout.grayscale_configuration;
 
     public GrayScaleMode(Context context) {
         //super("Mode ton de gris");

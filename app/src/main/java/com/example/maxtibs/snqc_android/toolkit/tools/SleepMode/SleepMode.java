@@ -23,7 +23,7 @@ import java.util.Calendar;
  */
 public class SleepMode extends AppCompatActivity implements ITool {
 
-    private static final int LAYOUT = R.layout.sleepmode_config;
+    private static final int LAYOUT = R.layout.sleepmode_configuration;
     private static final int ICON = R.drawable.ic_sleep_icon;
     private static final String NAME = "Mode sommeil";
 
@@ -31,7 +31,6 @@ public class SleepMode extends AppCompatActivity implements ITool {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
         //Inflate SleepMode View
         final LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(LAYOUT, null);

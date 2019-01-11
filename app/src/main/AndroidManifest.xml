@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.maxtibs.snqc_android">
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".toolkit.tools.SleepMode.SleepMode" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
@@ -20,19 +23,27 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".toolkit.tools.SleepMode.SleepModeLifecycle" android:enabled="true">
+        <receiver
+            android:name=".toolkit.tools.SleepMode.SleepModeLifecycle"
+            android:enabled="true">
             <intent-filter>
-                <action android:name="android.intent.action.ACTION_USER_PRESENT"/>
-                <action android:name="SleepModeAction.timeout"/>
-                <action android:name="SleepModeAction.reminder"/>
+                <action android:name="android.intent.action.ACTION_USER_PRESENT" />
+                <action android:name="SleepModeAction.timeout" />
+                <action android:name="SleepModeAction.reminder" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".toolkit.tools.SleepMode.SleepModeNotification" android:enabled="true">
+        <receiver
+            android:name=".toolkit.tools.SleepMode.SleepModeNotification"
+            android:enabled="true">
             <intent-filter>
-                <action android:name="SleepModeNotification.snooze"/>
-                <action android:name="SleepModeNotification.lock"/>
+                <action android:name="SleepModeNotification.snooze" />
+                <action android:name="SleepModeNotification.lock" />
             </intent-filter>
         </receiver>
+
+        <meta-data
+            android:name="com.google.android.actions"
+            android:resource="@xml/slide_in_up" />
     </application>
 
 </manifest>

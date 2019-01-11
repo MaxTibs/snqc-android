@@ -17,7 +17,7 @@ import java.util.Calendar;
 import static android.content.Intent.ACTION_USER_PRESENT;
 
 /**
- * This is the SleepMode Lifecycle.
+ * This is the SleepModeActivity Lifecycle.
  * 1.TIMEOUT EVENT: Once a day to check if user is using its phone at the start time. This should always trigger and be handle, no matter what.
  *                  If user is using it's phone, he or she is notify and reminder is set.
  * 2.ACTION_USER_EVENT: Is triggered if phone is unlock. This event is then handle to check if phone has been unlock inside the timerange.
@@ -44,6 +44,8 @@ public class SleepModeLifecycle extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
+        if(false /*TODO: Mode is not active return*/) {}
+
         String intentAction = intent.getAction();
 
         //Get min/max now
@@ -53,10 +55,10 @@ public class SleepModeLifecycle extends BroadcastReceiver {
 
         Calendar min = dayTimeNow(tr.getMin());
         Calendar max = dayTimeNow(tr.getMax());
-        if(max.compareTo(min) < 0) max.add(Calendar.DAY_OF_YEAR, 1); //Fix range
+        if (max.compareTo(min) < 0) max.add(Calendar.DAY_OF_YEAR, 1); //Fix range
 
         //First, we need to check if we're in range
-        if( (now.compareTo(min) >= 0 && now.compareTo(max) < 0) || intentAction.equals(TIMEOUT)) {
+        if ((now.compareTo(min) >= 0 && now.compareTo(max) < 0) || intentAction.equals(TIMEOUT)) {
             //Handlers (states)
             switch (intentAction) {
                 //LEVEL 1 EVENTS

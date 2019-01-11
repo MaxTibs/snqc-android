@@ -14,6 +14,7 @@ public class SleepModeModel {
     private static final String START_TIME_MINUTE = "SleepModeModel.sleep_start.minute";
     private static final String END_TIME_HOUR = "SleepModeModel.sleep_end.hour";
     private static final String END_TIME_MINUTE = "SleepModeModel.sleep_end.minute";
+    private static final String SWITCH_STATE = "SleepModeModel.switch";
 
     private static final int DEFAULT = 0;
 
@@ -35,6 +36,33 @@ public class SleepModeModel {
         return new TimeRange(startTime, endTime);
     }
 
+    /**
+     * Returns boolean telling if mode is activate or not
+     * @param context current context
+     * @return switch's state
+     */
+    public static boolean isActivate(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(FILENAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean(SWITCH_STATE, false);
+    }
+
+    /**
+     * Set the state of the mode. It is a boolean telling if mode is activate or not.
+     * @param context current context
+     * @param state state of switch
+     */
+    public static void setSwitchState(Context context, boolean state) {
+        SharedPreferences.Editor editor = getSPEditor(context);
+        editor.putBoolean(SWITCH_STATE, state);
+        editor.commit();
+    }
+
+    /**
+     * Set the min value in 24h of the timerange
+     * @param context current context
+     * @param hour int hour
+     * @param minute int minute
+     */
     public static void setTimeRangeMin(Context context, int hour, int minute) {
 
         //Update shared preference
@@ -47,6 +75,12 @@ public class SleepModeModel {
         notifyLifecycle(context);
     }
 
+    /**
+     * Set the max value in 24h of the timerange
+     * @param context current context
+     * @param hour int hour
+     * @param minute int minute
+     */
     public static void setTimeRangeMax(Context context, int hour, int minute) {
 
         //Update shared preference

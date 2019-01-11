@@ -1,48 +1,45 @@
 package com.example.maxtibs.snqc_android.toolkit.tools;
 
 import android.content.Context;
-import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.maxtibs.snqc_android.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.maxtibs.snqc_android.R;
 
-public class ExpandableAdapter extends ArrayAdapter<Tool> {
+public class ExpandableAdapter extends ArrayAdapter<ITool> {
 
     private Context _context;
-    private List<Tool> _tools = new ArrayList<Tool>();
+    private List<ITool> _tools = new ArrayList<ITool>();
 
-    public ExpandableAdapter(Context context, List<Tool> tools) {
+    public ExpandableAdapter(Context context, List<ITool> tools) {
         super(context, 0, tools);
-        this._context = context;
-        this._tools = tools;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
+        ITool iTool = getItem(position);
+        Tool t = iTool.getTool();
+
+        //Since we're creating list of tools, we just want to display tool_entry
         final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(getContext().LAYOUT_INFLATER_SERVICE);
-        Tool t = this._tools.get(position);
-
-        //Create basic layout (basically header)
         if(convertView == null) {
-            convertView = inflater.inflate(R.layout.expandable_pannel, null, false);
-            TextView tv = (TextView)convertView.findViewById(R.id.name_fonctionality);
-            tv.setText(t._name);
+            View v = inflater.inflate(R.layout.tool_entry, parent, false);
+            //Set tool name
+            TextView name = v.findViewById(R.id.tool_entry_name);
+            name.setText(t.getNAME());
+            //setIcon
+            ImageView icon = v.findViewById(R.id.tool_entry_icon);
+            icon.setImageResource(t.getICON());
+            convertView = v;
         }
-
-        //Set content view
-        ConstraintLayout cl = (ConstraintLayout) convertView.findViewById(R.id.content);
-        View v = this._tools.get(position).getConfigurationView(_context);
-
-        cl.removeAllViews();
-        cl.addView(v);
 
         return convertView;
 

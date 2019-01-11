@@ -14,7 +14,7 @@
 
         <include
             android:id="@+id/header"
-            layout="@layout/header_view"/>
+            layout="@layout/tool_entry"/>
 
         <include
             android:id="@+id/content"

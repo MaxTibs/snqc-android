@@ -2,28 +2,53 @@ package com.example.maxtibs.snqc_android.toolkit.tools.SleepMode;
 
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.provider.CalendarContract;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TimePicker;
 
 import com.example.maxtibs.snqc_android.R;
+import com.example.maxtibs.snqc_android.toolkit.tools.ITool;
 import com.example.maxtibs.snqc_android.toolkit.tools.Tool;
-import com.example.maxtibs.snqc_android.utilities.TimeRange;
 
 import java.util.Calendar;
 
 /**
- * SleepModeController Tool
+ * SleepMode Tool
  * This tool notify user when he's using it's phone in the configured time range
- * Basically, this class is the SleepModeController View. When view changes, it modify backend data
+ * Basically, this class is the SleepMode View. When view changes, it modify backend data
  */
-public class SleepModeController extends Tool {
+public class SleepMode extends AppCompatActivity implements ITool {
 
-    public final int CONFIGURATION_LAYOUT = R.layout.sleepmode_config;
-    private View view;
+    private static final int LAYOUT = R.layout.sleepmode_config;
+    private static final int ICON = R.drawable.ic_sleep_icon;
+    private static final String NAME = "Mode sommeil";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_main);
+        //Inflate SleepMode View
+        final LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(LAYOUT, null);
+
+        //Create a DatePickerButton that is a custom class that modify backend data on change
+        DatePickerButton start = new DatePickerButton(view, R.id.timepicker_start, this, true);
+        DatePickerButton end = new DatePickerButton(view, R.id.timepicker_end, this, false);
+
+        setContentView(view);
+        overridePendingTransition(R.xml.slide_in_right, R.xml.stay);
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.xml.stay, R.xml.slide_out_right);
+    }
 
     /**
      * Custom TimePickerButton.
@@ -109,27 +134,11 @@ public class SleepModeController extends Tool {
         }
     }
 
-    public SleepModeController(Context context) {
-        super("Mode sommeil");
+    public Tool getTool() {
+        return new Tool(NAME, ICON, LAYOUT);
     }
 
-    /**
-     * Returns SleepModeController View
-     * @param c context
-     * @return View
-     */
-    @Override
-    public View getConfigurationView(Context c) {
-
-        //Inflate SleepModeController View
-        final LayoutInflater inflater = (LayoutInflater) c.getSystemService(c.LAYOUT_INFLATER_SERVICE);
-        view = inflater.inflate(this.CONFIGURATION_LAYOUT, null);
-
-        //Create a DatePickerButton that is a custom class that modify backend data on change
-        DatePickerButton start = new DatePickerButton(view, R.id.timepicker_start, c, true);
-        DatePickerButton end = new DatePickerButton(view, R.id.timepicker_end, c, false);
-
-        return view;
+    public Intent getIntent(Context context) {
+        return new Intent(context, getClass());
     }
-
 }

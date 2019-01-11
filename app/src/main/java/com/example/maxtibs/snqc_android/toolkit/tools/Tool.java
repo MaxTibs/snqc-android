@@ -1,15 +1,26 @@
 package com.example.maxtibs.snqc_android.toolkit.tools;
 
-import android.content.Context;
-import android.view.View;
+public class Tool {
 
-public abstract class Tool {
-    protected String _name;
+    private final String NAME;
+    private final int ICON;
+    private final int LAYOUT;
 
-    public Tool(String name) {
-        this._name = name;
+    public Tool(String name, int icon, int layout) {
+        this.NAME = name;
+        this.ICON = icon;
+        this.LAYOUT = layout;
     }
 
-    protected abstract View getConfigurationView(Context c);
+    public String getNAME() {
+        return this.NAME;
+    }
 
+    public int getLAYOUT() {
+        return LAYOUT;
+    }
+
+    public int getICON() {
+        return ICON;
+    }
 }

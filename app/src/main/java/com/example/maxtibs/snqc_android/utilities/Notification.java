@@ -17,25 +17,49 @@ public class Notification {
     public int priority = NotificationCompat.PRIORITY_MAX;
     private String _channelId;
 
+    /**
+     * Constructor
+     * @param context current context
+     * @param channelId channelID
+     * @param channelName channelName
+     * @param channelDesc channel description
+     */
     public Notification(Context context, String channelId, String channelName, String channelDesc) {
         this._channelId = channelId;
         createNotificationChannel(context, channelId, channelName, channelDesc);
     }
 
+    /**
+     * Default notification template
+     * @param context
+     * @param title
+     * @param message
+     */
     public void setDefaultNotification(Context context, String title, String message) {
         this.builder = new NotificationCompat.Builder(context, this._channelId)
-                .setPriority(android.app.Notification.PRIORITY_HIGH)
-                .setSmallIcon(R.drawable.ic_notifications_black_24dp)
+                .setSmallIcon(R.drawable.ic_sleep_icon)
                 .setContentTitle(title)
-                .setContentText(message)
-                .setDefaults(NotificationCompat.DEFAULT_SOUND | NotificationCompat.DEFAULT_VIBRATE);
+                .setContentText("test")
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
+                .setPriority(2);
     }
 
+    /**
+     * Send notification
+     * @param context current context
+     */
     public void push(Context context) {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         notificationManager.notify(Integer.valueOf(this._channelId), this.builder.build());
     }
 
+    /**
+     * Create specific channel for notification
+     * @param context
+     * @param id id of channel
+     * @param chanName name of channel
+     * @param desc description of channel
+     */
     public void createNotificationChannel(Context context, String id, String chanName, String desc) {
 
         // Create the NotificationChannel, but only on API 26+ because

@@ -17,20 +17,24 @@ public class SleepModeNotification extends BroadcastReceiver{
     private static final String CHANID = "0";
 
     public static void notify(Context context) {
+
+        String msg = "Fermer l'écran pour que les notifications cessent.\nProchain rappel dans 15 minutes.\nVOus pouvez également désactiver la fonctionnalité pour aujourd'hui";
+
         //Send notification to user
         Notification notification = new Notification(context, CHANID, "Chan", "desc");
-        notification.setDefaultNotification(context, "SNQC", "Fermer l'écran");
+        notification.setDefaultNotification(context, "SNQC - Mode sommeil", msg);
 
         Intent snooze = new Intent(context, SleepModeNotification.class);
         snooze.setAction(SNOOZE);
-        Intent lockScreen = new Intent(context, SleepModeNotification.class);
-        lockScreen.setAction(LOCK);
+        /*Intent lockScreen = new Intent(context, SleepModeNotification.class);
+        lockScreen.setAction(LOCK);*/
 
         PendingIntent snoozePending = PendingIntent.getBroadcast(context, 0, snooze, 0);
-        PendingIntent lockScreenPending = PendingIntent.getBroadcast(context, 0, lockScreen, 0);
+        PendingIntent lockScreenPending = PendingIntent.getBroadcast(context, 0, snooze, 0);
 
-        notification.builder.addAction(R.drawable.ic_snooze, "Rappel (15 minutes)", snoozePending);
-        notification.builder.addAction(R.drawable.ic_snooze, "Fermer l'écran", lockScreenPending);
+        notification.builder.addAction(R.drawable.ic_snooze, "Fermer l'écran", snoozePending);
+        notification.builder.addAction(R.drawable.ic_snooze, "Désactiver", snoozePending);
+        //notification.builder.addAction(R.drawable.ic_snooze, "Fermer l'écran", lockScreenPending);
         //.setPriority(android.app.Notification.PRIORITY_HIGH)
         //.setSmallIcon(R.drawable.ic_notifications_black_24dp)
         //.setContentTitle(title)

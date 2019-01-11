@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
                     getSupportFragmentManager().beginTransaction().replace(R.id.navigation_frame, new ToolkitFragment()).commit();
                     return true;
                 case R.id.navigation_test:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.navigation_frame, new TestFragment()).commit();
+                    //getSupportFragmentManager().beginTransaction().replace(R.id.navigation_frame, new TestFragment()).commit();
                     return true;
                 case R.id.navigation_debug:
                     getSupportFragmentManager().beginTransaction().replace(R.id.navigation_frame, new DebugFragment()).commit();

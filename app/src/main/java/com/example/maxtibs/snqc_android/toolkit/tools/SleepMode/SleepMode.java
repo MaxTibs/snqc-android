@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TimePicker;
 
 import com.example.maxtibs.snqc_android.R;
@@ -38,6 +40,17 @@ public class SleepMode extends AppCompatActivity implements ITool {
         //Create a DatePickerButton that is a custom class that modify backend data on change
         DatePickerButton start = new DatePickerButton(view, R.id.timepicker_start, this, true);
         DatePickerButton end = new DatePickerButton(view, R.id.timepicker_end, this, false);
+
+        //Switch on/off listener
+        Switch mSwitch = view.findViewById(R.id.sleepmode_switch);
+        mSwitch.setChecked(SleepModeModel.isActivate(this));
+        final Context context = this;
+        mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                SleepModeModel.setSwitchState(context, b);
+            }
+        });
 
         setContentView(view);
         overridePendingTransition(R.xml.slide_in_right, R.xml.stay);

@@ -18,6 +18,11 @@ public class SleepModeModel {
 
     private static final int DEFAULT = 0;
 
+    /**
+     * Return preferred time range
+     * @param context
+     * @return
+     */
     public static TimeRange getTimeRange(Context context) {
 
         //Get sharedPreferences to get/edit user's data

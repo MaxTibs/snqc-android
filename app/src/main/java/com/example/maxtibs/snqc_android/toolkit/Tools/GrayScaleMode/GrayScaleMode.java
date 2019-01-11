@@ -1,4 +1,4 @@
-package com.example.maxtibs.snqc_android.toolkit.Tools;
+package com.example.maxtibs.snqc_android.toolkit.Tools.GrayScaleMode;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,7 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.maxtibs.snqc_android.R;
-import com.example.maxtibs.snqc_android.toolkit.GrayScaleStepper.GrayScaleStepperActivity;
+import com.example.maxtibs.snqc_android.toolkit.Tools.GrayScaleMode.GrayScaleStepper.GrayScaleStepperActivity;
+import com.example.maxtibs.snqc_android.toolkit.Tools.Tool;
 
 public class GrayScaleMode extends Tool {
 
@@ -28,6 +29,10 @@ public class GrayScaleMode extends Tool {
         return this._view = inflater.inflate(this.CONFIGURATION_LAYOUT, null);
     }
 
+    /**
+     * To be able to configure the header view. Removing the switch and add a click listener to help icon
+     * @param v the header view
+     */
     @Override
     public void configureHeaderView(View v) {
         // Check first if we are in the correct view (Otherwise, it would modify 2 views)

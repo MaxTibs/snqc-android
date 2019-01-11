@@ -6,7 +6,7 @@ import android.widget.ListView;
 
 import com.example.maxtibs.snqc_android.toolkit.Tools.BusyMode;
 import com.example.maxtibs.snqc_android.toolkit.Tools.ExpandableAdapter;
-import com.example.maxtibs.snqc_android.toolkit.Tools.GrayScaleMode;
+import com.example.maxtibs.snqc_android.toolkit.Tools.GrayScaleMode.GrayScaleMode;
 import com.example.maxtibs.snqc_android.toolkit.Tools.SleepMode;
 import com.example.maxtibs.snqc_android.toolkit.Tools.Tool;
 

@@ -1,4 +1,4 @@
-package com.example.maxtibs.snqc_android.toolkit.GrayScaleStepper;
+package com.example.maxtibs.snqc_android.toolkit.Tools.GrayScaleMode.GrayScaleStepper;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -7,8 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 
 import com.example.maxtibs.snqc_android.R;
-import com.example.maxtibs.snqc_android.toolkit.GrayScaleStepper.fragments.ActivateMonochromeStep;
-import com.example.maxtibs.snqc_android.toolkit.GrayScaleStepper.fragments.DevConfigStep;
+import com.example.maxtibs.snqc_android.toolkit.Tools.GrayScaleMode.GrayScaleStepper.fragments.ActivateMonochromeStep;
+import com.example.maxtibs.snqc_android.toolkit.Tools.GrayScaleMode.GrayScaleStepper.fragments.DevConfigStep;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter;
 import com.stepstone.stepper.viewmodel.StepViewModel;
@@ -21,6 +21,11 @@ public class StepperAdapter extends AbstractFragmentStepAdapter {
         super(fm, context);
     }
 
+    /**
+     * To create the current step fragment to show
+     * @param position: current position
+     * @return the step to show
+     */
     @Override
     public Step createStep(int position) {
         switch (position) {
@@ -43,11 +48,20 @@ public class StepperAdapter extends AbstractFragmentStepAdapter {
         }
     }
 
+    /**
+     * To get the number of steps
+     * @return the number of steps
+     */
     @Override
     public int getCount() {
         return 2;
     }
 
+    /**
+     * To create a unique view for every steps. Currently all the same
+     * @param position: current position
+     * @return the view to show at the current position
+     */
     @NonNull
     @Override
     public StepViewModel getViewModel(@IntRange(from = 0) int position) {

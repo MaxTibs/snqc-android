@@ -1,4 +1,4 @@
-package com.example.maxtibs.snqc_android.toolkit.GrayScaleStepper;
+package com.example.maxtibs.snqc_android.toolkit.Tools.GrayScaleMode.GrayScaleStepper;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

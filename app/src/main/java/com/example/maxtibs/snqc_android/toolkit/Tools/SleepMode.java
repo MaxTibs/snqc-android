@@ -19,7 +19,7 @@ public class SleepMode extends Tool{
 
     @Override
     public void configureHeaderView(View v) {
-        System.out.println("SleepMode");
+
     }
 
     @Override

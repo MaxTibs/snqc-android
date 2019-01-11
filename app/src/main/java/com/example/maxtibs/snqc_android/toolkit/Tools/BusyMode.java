@@ -19,7 +19,7 @@ public class BusyMode extends Tool{
 
     @Override
     public void configureHeaderView(View v) {
-        System.out.println("BusyMode");
+
     }
 
     @Override

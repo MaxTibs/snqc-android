@@ -1,4 +1,4 @@
-package com.example.maxtibs.snqc_android.toolkit.GrayScaleStepper.fragments;
+package com.example.maxtibs.snqc_android.toolkit.Tools.GrayScaleMode.GrayScaleStepper.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

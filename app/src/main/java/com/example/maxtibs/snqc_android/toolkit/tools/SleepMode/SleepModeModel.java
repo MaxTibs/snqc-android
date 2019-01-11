@@ -60,6 +60,8 @@ public class SleepModeModel {
         SharedPreferences.Editor editor = getSPEditor(context);
         editor.putBoolean(SWITCH_STATE, state);
         editor.commit();
+        //Notify lifecycle that model has change
+        notifyLifecycle(context);
     }
 
     /**

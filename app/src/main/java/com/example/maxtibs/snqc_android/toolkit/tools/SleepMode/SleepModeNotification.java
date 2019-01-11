@@ -14,7 +14,7 @@ public class SleepModeNotification extends BroadcastReceiver{
     private static final String SNOOZE = "SleepModeNotification.snooze";
     private static final String LOCK = "SleepModeNotification.lock";
 
-    private static final String CHANID = "0";
+    public static final String CHANID = "0";
 
     public static void notify(Context context) {
 
@@ -44,6 +44,11 @@ public class SleepModeNotification extends BroadcastReceiver{
         notification.push(context);
     }
 
+    public static void dismiss(Context context, String channel) {
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+        notificationManager.cancel(Integer.valueOf(channel)); //Dismiss notification
+    }
+
     @Override
     public void onReceive(Context context, Intent intent) {
 
@@ -51,8 +56,7 @@ public class SleepModeNotification extends BroadcastReceiver{
 
         switch (action) {
             case(SNOOZE):
-                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-                notificationManager.cancel(Integer.valueOf(SleepModeNotification.CHANID)); //Dismiss notification
+                dismiss(context, SleepModeNotification.CHANID);
                 break;
             case (LOCK):
                 break;

@@ -44,7 +44,8 @@ public class SleepModeLifecycle extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        if(false /*TODO: Mode is not active return*/) {}
+        //If mode not activate, don't do anything
+        if(!SleepModeModel.isActivate(context)) {return; }
 
         String intentAction = intent.getAction();
 
@@ -126,6 +127,7 @@ public class SleepModeLifecycle extends BroadcastReceiver {
     public static void cancelAndRebuild(Context context) {
 
         //TODO: cancel every alarms?
+        SleepModeNotification.dismiss(context, SleepModeNotification.CHANID);
 
         //Cancel alarm if already exists
         cancelAlarm(context, SleepModeLifecycle.timeoutIntent);

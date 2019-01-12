@@ -6,6 +6,8 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.example.maxtibs.snqc_android.utilities.FirebaseUtility;
+
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -34,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Initialize the Firebase utility
+        FirebaseUtility.initializeAnalytics(this);
+
         setContentView(R.layout.activity_main);
 
         //mTextMessage = (TextView) findViewById(R.id.message);

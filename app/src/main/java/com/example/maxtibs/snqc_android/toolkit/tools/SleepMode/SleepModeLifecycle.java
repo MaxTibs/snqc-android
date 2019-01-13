@@ -38,10 +38,9 @@ public class SleepModeLifecycle extends BroadcastReceiver {
     public static PendingIntent timeoutIntent;
     public static PendingIntent reminderIntent;
 
-    public static final int REMINDER_DELAY = 1000*60*15; //15 min
-
     public static Calendar actualStart;
     public static Calendar actualEnd;
+    public static Calendar reminderDate;
 
     //State machine
     @Override
@@ -156,24 +155,29 @@ public class SleepModeLifecycle extends BroadcastReceiver {
      * Creates an alarm to triggers 15 minutes from now
      * @param context
      */
-    private void setReminder(Context context) {
+    private static void setReminder(Context context) {
 
         //Cancel any other reminder alarm
         if(SleepModeLifecycle.reminderIntent != null)
             cancelAlarm(context, SleepModeLifecycle.reminderIntent);
 
         //Create new alarm
-        Intent intent = new Intent(context, this.getClass());
+        Intent intent = new Intent(context, SleepModeLifecycle.class);
         intent.setAction(REMINDER);
         SleepModeLifecycle.reminderIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
 
         //Next reminder is now + REMINDER_DELAY
         Calendar nextReminder = Calendar.getInstance();
-        nextReminder.setTimeInMillis(Calendar.getInstance().getTimeInMillis() + REMINDER_DELAY);
+        nextReminder.setTimeInMillis(Calendar.getInstance().getTimeInMillis() + 1000*60*SleepModeModel.getRecallDelayPreference(context));
+        reminderDate = nextReminder;
 
         //Set next alarm
         setAlarm(context, nextReminder.getTimeInMillis(), SleepModeLifecycle.reminderIntent);
         Log.d(DTAG, "Next reminder set to trigger at " + nextReminder.getTime().toString());
+    }
+
+    public static void resetReminder(Context context) {
+        setReminder(context);
     }
 
     /**

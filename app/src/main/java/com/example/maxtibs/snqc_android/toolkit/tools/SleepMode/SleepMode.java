@@ -7,8 +7,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TimePicker;
 
@@ -49,6 +52,24 @@ public class SleepMode extends AppCompatActivity implements ITool {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 SleepModeModel.setSwitchState(context, b);
+            }
+        });
+
+        ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter<Integer>(context, android.R.layout.simple_spinner_item, SleepModeModel.recall_delays);
+        Spinner spinner = view.findViewById(R.id.sleepmode_recall_spinner);
+        spinner.setAdapter(arrayAdapter);
+        spinner.setSelection(SleepModeModel.getRecallDelayPreferencePosition(context));
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Integer selected = (Integer) parent.getItemAtPosition(position);
+                SleepModeModel.setRecallDelayPreference(context, selected);
+                SleepModeLifecycle.resetReminder(context);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                return;
             }
         });
 

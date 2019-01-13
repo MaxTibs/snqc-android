@@ -9,6 +9,9 @@ import android.support.v4.app.NotificationManagerCompat;
 import com.example.maxtibs.snqc_android.R;
 import com.example.maxtibs.snqc_android.utilities.Notification;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class SleepModeNotification extends BroadcastReceiver{
 
     private static final String SNOOZE = "SleepModeNotification.snooze";
@@ -21,15 +24,18 @@ public class SleepModeNotification extends BroadcastReceiver{
 
     public static void notify(Context context) {
 
-        String quickMsg = "Fermez l'écran : Rappel dans 15 minutes.";
-        String msg = quickMsg + "\n\nVous pouvez également désactiver la fonctionnalité TEMPORAIREMENT";
+        dismiss(context, CHANID);
 
+        Date date = SleepModeLifecycle.reminderDate.getTime();
+        String display = new SimpleDateFormat("H'h'mm").format(date);
+        String quickMsg = "Fermez l'écran.";
+        String msg = "Fermez l'écran.\nRappel prévu à " + display + "\n\nCliquez sur la notification pour accéder aux paramètres.";
 
         //Send notification to user
         Notification notification = new Notification(context, CHANID, "Chan", "desc");
-        notification.setDefaultNotification(context, "SNQC - Mode sommeil",quickMsg, msg);
+        notification.setDefaultNotification(context, "SNQC - Mode sommeil", quickMsg, msg);
 
-        Intent snooze = new Intent(context, SleepModeNotification.class);
+       /* Intent snooze = new Intent(context, SleepModeNotification.class);
         snooze.setAction(SNOOZE);
         Intent deactivate = new Intent(context, SleepModeNotification.class);
         deactivate.setAction(DEACTIVATE);
@@ -38,7 +44,7 @@ public class SleepModeNotification extends BroadcastReceiver{
         PendingIntent deactivatePending = PendingIntent.getBroadcast(context, 0, snooze, 0);
 
         notification.builder.addAction(R.drawable.ic_snooze, "Ok", snoozePending);
-        notification.builder.addAction(R.drawable.ic_snooze, "Désactiver", deactivatePending);
+        notification.builder.addAction(R.drawable.ic_snooze, "Désactiver", deactivatePending);*/
 
         notification.push(context);
     }

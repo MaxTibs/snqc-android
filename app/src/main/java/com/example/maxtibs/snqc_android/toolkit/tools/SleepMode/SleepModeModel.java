@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import com.example.maxtibs.snqc_android.utilities.DayTime;
 import com.example.maxtibs.snqc_android.utilities.TimeRange;
 
+import java.util.Calendar;
+
 
 public class SleepModeModel {
 
@@ -15,8 +17,11 @@ public class SleepModeModel {
     private static final String END_TIME_HOUR = "SleepModeModel.sleep_end.hour";
     private static final String END_TIME_MINUTE = "SleepModeModel.sleep_end.minute";
     private static final String SWITCH_STATE = "SleepModeModel.switch";
+    private static final String RECALL_DELAY = "SleepModeModel.recall_delay";
 
     private static final int DEFAULT = 0;
+
+    public static final Integer[] recall_delays = {5, 10, 15, 20, 25, 30, 45, 60};
 
     /**
      * Return preferred time range
@@ -98,6 +103,26 @@ public class SleepModeModel {
 
         //Cancel & Re-build alarms
         notifyLifecycle(context);
+    }
+
+    public static void setRecallDelayPreference(Context context, int minutes) {
+        SharedPreferences.Editor editor = getSPEditor(context);
+        editor.putInt(RECALL_DELAY, minutes);
+        editor.commit();
+    }
+
+    public static Integer getRecallDelayPreference(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(FILENAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getInt(RECALL_DELAY, recall_delays[2]);
+    }
+    public static Integer getRecallDelayPreferencePosition(Context context) {
+        Integer val = getRecallDelayPreference(context);
+        for(int i = 0; i < recall_delays.length; i++) {
+            if(recall_delays[i].equals(val)) {
+                return i;
+            }
+        }
+        return 0;
     }
 
     /**

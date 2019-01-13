@@ -2,12 +2,15 @@ package com.example.maxtibs.snqc_android.utilities;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 
 import com.example.maxtibs.snqc_android.R;
+import com.example.maxtibs.snqc_android.toolkit.tools.SleepMode.SleepMode;
 
 public class Notification {
 
@@ -35,13 +38,23 @@ public class Notification {
      * @param title
      * @param message
      */
-    public void setDefaultNotification(Context context, String title, String quickMsg, String message) {
+    public void setDefaultNotification(Context context, String title, String quickMsg, String msg) {
+
+        // Create an explicit intent for an Activity in your app
+        Intent intent = new Intent(context, SleepMode.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+
         this.builder = new NotificationCompat.Builder(context, this._channelId)
-                .setSmallIcon(R.drawable.ic_sleep_icon)
-                .setContentTitle(title)
-                .setContentText(quickMsg)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
-                .setPriority(2);
+            .setDefaults(NotificationCompat.DEFAULT_ALL)
+            .setSmallIcon(R.drawable.ic_sleep_icon)
+            .setContentTitle(title)
+            .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
+            .setContentText(quickMsg)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setContentIntent(pendingIntent)
+            .setOngoing(true)
+            .setAutoCancel(true);
     }
 
     /**
@@ -70,7 +83,7 @@ public class Notification {
             int importance = NotificationManager.IMPORTANCE_HIGH;
             this.channel = new NotificationChannel(id, name, importance);
             this.channel.setDescription(description);
-            this.channel.setLockscreenVisibility(android.app.Notification.VISIBILITY_PUBLIC);
+            //this.channel.setLockscreenVisibility(android.app.Notification.VISIBILITY_PUBLIC);
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
             NotificationManager notificationManager = context.getSystemService(NotificationManager.class);

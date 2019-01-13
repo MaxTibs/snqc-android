@@ -59,6 +59,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@android:color/darker_gray"/>
 
+            <!--Configuration-->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -67,9 +68,17 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Heures de sommeil"
+                    android:text="Préférences"
                     android:textStyle="bold"
                     android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"/>
+                <!--Sleep time-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Heures de sommeil (format 24h)"
+                    android:textSize="14dp"
+                    android:layout_marginTop="10dp"
                     android:textColor="@color/colorPrimaryDark"/>
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -78,7 +87,7 @@
                     <Button
                         android:id="@+id/timepicker_start"
                         android:text="0:0"
-                        android:layout_width="wrap_content"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content" />
                     <TextView
                         android:layout_width="wrap_content"
@@ -87,9 +96,25 @@
                     <Button
                         android:id="@+id/timepicker_end"
                         android:text="0:0"
-                        android:layout_width="wrap_content"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
+                <!--Recall preference-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rappel (minute)"
+                    android:textSize="14dp"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/colorPrimaryDark"/>
+                <Spinner
+                    android:id="@+id/sleepmode.recall_spinner"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/btn_dropdown"
+                    android:spinnerMode="dropdown"
+                    android:dropDownWidth="100dp"
+                    />
             </LinearLayout>
 
 

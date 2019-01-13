@@ -1,5 +1,11 @@
 package com.example.maxtibs.snqc_android.utilities;
 
+import android.util.Log;
+import android.util.Pair;
+
+
+import java.util.Calendar;
+
 public class TimeRange {
 
     private DayTime min;
@@ -18,5 +24,70 @@ public class TimeRange {
     }
     public void setMax(int hour, int minute) {
         this.max.setTime(hour, minute);
+    }
+
+    /**
+     * Return DayTime as Calendar today
+     * @param dayTime time to adjust
+     * @return Adjusted daytime
+     */
+    private Calendar dayTimeNow(DayTime dayTime) {
+        Calendar now = Calendar.getInstance();
+        now.set(Calendar.HOUR_OF_DAY, dayTime.getHour());
+        now.set(Calendar.MINUTE, dayTime.getMinute());
+        now.set(Calendar.SECOND, 0);
+        Log.d("TimeRange", "dayTimeNow: " + now.getTime().toString());
+        return now;
+    }
+
+    /**
+     * Return Calendar range min, max. Ranges are fix based on now.
+     *  1.If whole range is in the past, add 1 day to min, max
+     *  2.If max < min, add 1 day to max.
+     * @return Pair object containing min and max
+     */
+    private Pair<Calendar, Calendar> getCalendarRange() {
+
+        Calendar now = Calendar.getInstance();
+
+        //Min and Max as of today
+        Calendar min = dayTimeNow(getMin());
+        Calendar max = dayTimeNow(getMax());
+
+        /////FIXING RANGE///////
+
+        //Check if max < min. If so, add 1 day to max
+        if(max.compareTo(min) < 0) {
+            max.add(Calendar.DAY_OF_YEAR, 1);
+            Log.d("TimeRange", "max < min");
+        }
+
+        //Check if min & max is less than now. If so, add 1 day to each
+        if(min.compareTo(now) < 0 && max.compareTo(now) < 0) {
+            min.add(Calendar.DAY_OF_YEAR, 1);
+            max.add(Calendar.DAY_OF_YEAR, 1);
+            Log.d("TimeRange", "Not in range");
+        }
+
+        return new Pair<>(min, max);
+    }
+
+    /**
+     * Return min Calendar from CalendarRange
+     * @return min calendar
+     */
+    public Calendar getCalendarMin() {
+        Pair<Calendar, Calendar> pair = getCalendarRange();
+        Log.d("TimeRange", "getCalendarMin: " + pair.first.getTime().toString());
+        return pair.first;
+    }
+
+    /**
+     * Return max Calendar from CalendarRange
+     * @return max calendar
+     */
+    public Calendar getCalendarMax() {
+        Pair<Calendar, Calendar> pair = getCalendarRange();
+        return pair.second;
     }
 }

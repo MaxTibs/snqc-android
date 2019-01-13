@@ -51,20 +51,20 @@ public class SleepMode extends AppCompatActivity implements ITool {
         mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                SleepModeModel.setSwitchState(context, b);
+                SleepModeModel.activate(context, b);
             }
         });
 
+        //Dropdown reminder preference
         ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter<Integer>(context, android.R.layout.simple_spinner_item, SleepModeModel.recall_delays);
         Spinner spinner = view.findViewById(R.id.sleepmode_recall_spinner);
         spinner.setAdapter(arrayAdapter);
-        spinner.setSelection(SleepModeModel.getRecallDelayPreferencePosition(context));
+        spinner.setSelection(SleepModeModel.getReminderPositionInArray(context));
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Integer selected = (Integer) parent.getItemAtPosition(position);
-                SleepModeModel.setRecallDelayPreference(context, selected);
-                SleepModeLifecycle.resetReminder(context);
+                SleepModeModel.setReminderDelay(context, selected);
             }
 
             @Override
@@ -73,6 +73,7 @@ public class SleepMode extends AppCompatActivity implements ITool {
             }
         });
 
+        //Create view
         setContentView(view);
         overridePendingTransition(R.xml.slide_in_right, R.xml.stay);
     }
@@ -167,6 +168,10 @@ public class SleepMode extends AppCompatActivity implements ITool {
         }
     }
 
+    /**
+     * Return Tool based on this class
+     * @return Tool object (interface)
+     */
     public Tool getTool() {
         return new Tool(NAME, ICON, LAYOUT);
     }

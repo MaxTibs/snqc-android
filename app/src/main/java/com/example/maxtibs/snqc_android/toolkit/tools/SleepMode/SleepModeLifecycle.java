@@ -6,14 +6,15 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
+import android.util.Pair;
 
 import com.example.maxtibs.snqc_android.utilities.DayTime;
 import com.example.maxtibs.snqc_android.utilities.TimeRange;
 
 import java.util.Calendar;
 
+import static android.content.Intent.ACTION_BOOT_COMPLETED;
 import static android.content.Intent.ACTION_USER_PRESENT;
 
 /**
@@ -38,29 +39,23 @@ public class SleepModeLifecycle extends BroadcastReceiver {
     public static PendingIntent timeoutIntent;
     public static PendingIntent reminderIntent;
 
-    public static Calendar actualStart;
-    public static Calendar actualEnd;
     public static Calendar reminderDate;
 
     //State machine
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        //If mode not activate, don't do anything
-        if(!SleepModeModel.isActivate(context)) { return; }
-
         String intentAction = intent.getAction();
-
-        //Get min/max now
-        TimeRange tr = SleepModeModel.getTimeRange(context);
         Calendar now = Calendar.getInstance();
         Log.d(DTAG, "State check at " + now.getTime().toString() + " for " + intentAction + " event");
 
-        Calendar min = dayTimeNow(tr.getMin());
-        Calendar max = dayTimeNow(tr.getMax());
+        //If mode not activate, don't do anything
+        if(!SleepModeModel.isActivate(context)) { return; }
 
-        //Fix range
-        if (max.compareTo(min) < 0) max.add(Calendar.DAY_OF_YEAR, 1);
+        //Min and Max as of today
+        TimeRange tr = SleepModeModel.getTimeRange(context);
+        Calendar min = tr.getCalendarMin();
+        Calendar max = tr.getCalendarMax();
 
         //First, we need to check if we're in range
         if ((now.compareTo(min) >= 0 && now.compareTo(max) < 0) || intentAction.equals(TIMEOUT)) {
@@ -69,6 +64,7 @@ public class SleepModeLifecycle extends BroadcastReceiver {
                 //LEVEL 1 EVENTS
                 case ACTION_USER_PRESENT: //Android event: Phone got unlocked
                     //phoneUnlockAction(context);
+                    Log.d(DTAG, "PHONE UNLOCK!");
                     break;
                 case TIMEOUT: //Custom event: SleepModeLifecycle.timeout
                     timeoutAction(context);
@@ -76,12 +72,12 @@ public class SleepModeLifecycle extends BroadcastReceiver {
                 //LEVEL 2 EVENT
                 case REMINDER: //Custom event: SleepModeLifecycle.reminder (timeout after 15 min) comes from ACTION_USER_PRESENT or TIMEOUT
                     //Check if phone unlock. If so, notify user to close its phone and set a new reminder
-                    notifyAndRemind(context);
+                    notifyAndResetReminder(context);
                     break;
             }
         } else { //Blackhole. Every event that enters here will never schedule anything next
             //Debug
-            Log.d(DTAG, "Now not in range");
+            Log.d(DTAG, "Now is not in TimeRange");
         }
     }
 
@@ -90,7 +86,7 @@ public class SleepModeLifecycle extends BroadcastReceiver {
      * If so, notify user to close its phone and schedule a next reminder
      * @param context current context
      */
-    private void notifyAndRemind(Context context) {
+    private void notifyAndResetReminder(Context context) {
         //Check if phone unlock. If so, notify user to close its phone
         if(phoneIsUnlock(context)) {
             SleepModeNotification.notify(context);
@@ -103,16 +99,16 @@ public class SleepModeLifecycle extends BroadcastReceiver {
      * @param context current context
      */
     private void timeoutAction(Context context) {
-        Calendar now = Calendar.getInstance();
 
-        notifyAndRemind(context);
+        notifyAndResetReminder(context);
 
         //Schedule next timeoutAction 1 day later
-        Calendar startTime = dayTimeNow(SleepModeModel.getTimeRange(context).getMin());
+        Calendar startTime = SleepModeModel.getTimeRange(context).getCalendarMin();
         startTime.add(Calendar.DAY_OF_YEAR, 1); //INCREMENT
 
         //Cancel alarm if already exists
-        cancelAlarm(context, SleepModeLifecycle.timeoutIntent);
+        if(SleepModeLifecycle.timeoutIntent != null)
+            cancelAlarm(context, SleepModeLifecycle.timeoutIntent);
 
         //Create new alarm
         Intent intent = new Intent(context, SleepModeLifecycle.class);
@@ -121,41 +117,42 @@ public class SleepModeLifecycle extends BroadcastReceiver {
 
         //Set next alarm
         setAlarm(context, startTime.getTimeInMillis(), SleepModeLifecycle.timeoutIntent);
-        Log.d(DTAG, "Timeout alarm set to trigger at " + startTime.getTime().toString());
+        Log.d(DTAG, "timeoutAction:Timeout alarm set to trigger at " + startTime.getTime().toString());
     }
 
     /**
      * Cancel and rebuild alarms: TimeoutIntent
      * @param context current context
      */
-    public static void cancelAndRebuild(Context context) {
+    public static void rebuild(Context context) {
 
         //TODO: cancel every alarms?
-        SleepModeNotification.dismiss(context, SleepModeNotification.CHANID);
+        SleepModeNotification.dismiss(context, SleepModeNotification.CHANID); //Dismiss notification
 
         //Cancel alarm if already exists
         if(SleepModeLifecycle.timeoutIntent != null)
             cancelAlarm(context, SleepModeLifecycle.timeoutIntent);
-        Log.d(DTAG, "Cancelling old alarm");
 
-        //Get time now from DayTime
-        Calendar startTime = dayTimeNow(SleepModeModel.getTimeRange(context).getMin());
-        Calendar now = Calendar.getInstance();
+        Log.d(DTAG, "Rebuild:Cancelling everything");
+
+        //If not activate, return
+        if(!SleepModeModel.isActivate(context)) return;
 
         //Re-create alarm
+        Calendar startTime = SleepModeModel.getTimeRange(context).getCalendarMin();
         Intent intent = new Intent(context, SleepModeLifecycle.class);
         intent.setAction(TIMEOUT);
         SleepModeLifecycle.timeoutIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
         setAlarm(context, startTime.getTimeInMillis(), SleepModeLifecycle.timeoutIntent);
-        Log.d(DTAG, "Creating new alarm to trigger at " + startTime.getTime().toString());
+        Log.d(DTAG, "Rebuild:Re-Creating new alarm to trigger at " + startTime.getTime().toString());
     }
 
 
     /**
      * Creates an alarm to triggers 15 minutes from now
-     * @param context
+     * @param context current context
      */
-    private static void setReminder(Context context) {
+    public static void setReminder(Context context) {
 
         //Cancel any other reminder alarm
         if(SleepModeLifecycle.reminderIntent != null)
@@ -168,16 +165,12 @@ public class SleepModeLifecycle extends BroadcastReceiver {
 
         //Next reminder is now + REMINDER_DELAY
         Calendar nextReminder = Calendar.getInstance();
-        nextReminder.setTimeInMillis(Calendar.getInstance().getTimeInMillis() + 1000*60*SleepModeModel.getRecallDelayPreference(context));
+        nextReminder.setTimeInMillis(Calendar.getInstance().getTimeInMillis() + 1000*60*SleepModeModel.getReminderDelay(context));
         reminderDate = nextReminder;
 
         //Set next alarm
         setAlarm(context, nextReminder.getTimeInMillis(), SleepModeLifecycle.reminderIntent);
         Log.d(DTAG, "Next reminder set to trigger at " + nextReminder.getTime().toString());
-    }
-
-    public static void resetReminder(Context context) {
-        setReminder(context);
     }
 
     /**
@@ -188,7 +181,6 @@ public class SleepModeLifecycle extends BroadcastReceiver {
         KeyguardManager keyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
         return !keyguardManager.isKeyguardLocked(); //Ask android is phone is unlocked
     }
-
 
     /**
      * Cancels alarm
@@ -213,18 +205,5 @@ public class SleepModeLifecycle extends BroadcastReceiver {
                 timeInMs,
                 pendingIntent
         );
-    }
-
-    /**
-     * Return DayTime as Calendar toay
-     * @param dayTime time to adjust
-     * @return Adjusted daytime
-     */
-    private static Calendar dayTimeNow(DayTime dayTime) {
-        Calendar now = Calendar.getInstance();
-        now.set(Calendar.HOUR_OF_DAY, dayTime.getHour());
-        now.set(Calendar.MINUTE, dayTime.getMinute());
-        now.set(Calendar.SECOND, 0);
-        return now;
     }
 }

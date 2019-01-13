@@ -53,8 +53,8 @@ public class Notification {
             .setContentText(quickMsg)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(pendingIntent)
-            .setOngoing(true)
-            .setAutoCancel(true);
+            .setOngoing(true);
+            //.setAutoCancel(true); //false: notification is persistent
     }
 
     /**

@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationManagerCompat;
 
-import com.example.maxtibs.snqc_android.R;
 import com.example.maxtibs.snqc_android.utilities.Notification;
 
 import java.text.SimpleDateFormat;
@@ -28,7 +27,7 @@ public class SleepModeNotification extends BroadcastReceiver{
 
         Date date = SleepModeLifecycle.reminderDate.getTime();
         String display = new SimpleDateFormat("H'h'mm").format(date);
-        String quickMsg = "Fermez l'écran.";
+        String quickMsg = "Fermez l'écran";
         String msg = "Fermez l'écran.\nRappel prévu à " + display + "\n\nCliquez sur la notification pour accéder aux paramètres.";
 
         //Send notification to user
@@ -65,7 +64,7 @@ public class SleepModeNotification extends BroadcastReceiver{
                 break;
             case (DEACTIVATE):
                 //Create alarm to reactivate
-                SleepModeModel.setSwitchState(context, false);
+                SleepModeModel.activate(context, false);
                 Intent activateIntent = new Intent(context, this.getClass());
                 intent.setAction(REACTIVATE);
                 reactivateIntent = PendingIntent.getBroadcast(context, 0, activateIntent, 0);

@@ -40,12 +40,15 @@ public class SleepModeLifecycle extends BroadcastReceiver {
 
     public static final int REMINDER_DELAY = 1000*60*15; //15 min
 
+    public static Calendar actualStart;
+    public static Calendar actualEnd;
+
     //State machine
     @Override
     public void onReceive(Context context, Intent intent) {
 
         //If mode not activate, don't do anything
-        if(!SleepModeModel.isActivate(context)) {return; }
+        if(!SleepModeModel.isActivate(context)) { return; }
 
         String intentAction = intent.getAction();
 
@@ -56,7 +59,9 @@ public class SleepModeLifecycle extends BroadcastReceiver {
 
         Calendar min = dayTimeNow(tr.getMin());
         Calendar max = dayTimeNow(tr.getMax());
-        if (max.compareTo(min) < 0) max.add(Calendar.DAY_OF_YEAR, 1); //Fix range
+
+        //Fix range
+        if (max.compareTo(min) < 0) max.add(Calendar.DAY_OF_YEAR, 1);
 
         //First, we need to check if we're in range
         if ((now.compareTo(min) >= 0 && now.compareTo(max) < 0) || intentAction.equals(TIMEOUT)) {
@@ -130,11 +135,13 @@ public class SleepModeLifecycle extends BroadcastReceiver {
         SleepModeNotification.dismiss(context, SleepModeNotification.CHANID);
 
         //Cancel alarm if already exists
-        cancelAlarm(context, SleepModeLifecycle.timeoutIntent);
+        if(SleepModeLifecycle.timeoutIntent != null)
+            cancelAlarm(context, SleepModeLifecycle.timeoutIntent);
         Log.d(DTAG, "Cancelling old alarm");
 
         //Get time now from DayTime
         Calendar startTime = dayTimeNow(SleepModeModel.getTimeRange(context).getMin());
+        Calendar now = Calendar.getInstance();
 
         //Re-create alarm
         Intent intent = new Intent(context, SleepModeLifecycle.class);
@@ -152,7 +159,8 @@ public class SleepModeLifecycle extends BroadcastReceiver {
     private void setReminder(Context context) {
 
         //Cancel any other reminder alarm
-        cancelAlarm(context, SleepModeLifecycle.reminderIntent);
+        if(SleepModeLifecycle.reminderIntent != null)
+            cancelAlarm(context, SleepModeLifecycle.reminderIntent);
 
         //Create new alarm
         Intent intent = new Intent(context, this.getClass());
@@ -203,6 +211,11 @@ public class SleepModeLifecycle extends BroadcastReceiver {
         );
     }
 
+    /**
+     * Return DayTime as Calendar toay
+     * @param dayTime time to adjust
+     * @return Adjusted daytime
+     */
     private static Calendar dayTimeNow(DayTime dayTime) {
         Calendar now = Calendar.getInstance();
         now.set(Calendar.HOUR_OF_DAY, dayTime.getHour());

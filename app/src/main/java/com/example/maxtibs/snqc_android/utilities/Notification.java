@@ -35,11 +35,11 @@ public class Notification {
      * @param title
      * @param message
      */
-    public void setDefaultNotification(Context context, String title, String message) {
+    public void setDefaultNotification(Context context, String title, String quickMsg, String message) {
         this.builder = new NotificationCompat.Builder(context, this._channelId)
                 .setSmallIcon(R.drawable.ic_sleep_icon)
                 .setContentTitle(title)
-                .setContentText("test")
+                .setContentText(quickMsg)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
                 .setPriority(2);
     }

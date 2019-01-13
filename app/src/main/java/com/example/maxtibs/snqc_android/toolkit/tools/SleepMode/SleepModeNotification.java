@@ -12,34 +12,33 @@ import com.example.maxtibs.snqc_android.utilities.Notification;
 public class SleepModeNotification extends BroadcastReceiver{
 
     private static final String SNOOZE = "SleepModeNotification.snooze";
-    private static final String LOCK = "SleepModeNotification.lock";
+    private static final String DEACTIVATE = "SleepModeNotification.deactivate";
+    private static final String REACTIVATE = "SleepModeNotification.activate";
 
     public static final String CHANID = "0";
 
+    private PendingIntent reactivateIntent;
+
     public static void notify(Context context) {
 
-        String msg = "Fermer l'écran pour que les notifications cessent.\nProchain rappel dans 15 minutes.\nVOus pouvez également désactiver la fonctionnalité pour aujourd'hui";
+        String quickMsg = "Fermez l'écran : Rappel dans 15 minutes.";
+        String msg = quickMsg + "\n\nVous pouvez également désactiver la fonctionnalité TEMPORAIREMENT";
+
 
         //Send notification to user
         Notification notification = new Notification(context, CHANID, "Chan", "desc");
-        notification.setDefaultNotification(context, "SNQC - Mode sommeil", msg);
+        notification.setDefaultNotification(context, "SNQC - Mode sommeil",quickMsg, msg);
 
         Intent snooze = new Intent(context, SleepModeNotification.class);
         snooze.setAction(SNOOZE);
-        /*Intent lockScreen = new Intent(context, SleepModeNotification.class);
-        lockScreen.setAction(LOCK);*/
+        Intent deactivate = new Intent(context, SleepModeNotification.class);
+        deactivate.setAction(DEACTIVATE);
 
         PendingIntent snoozePending = PendingIntent.getBroadcast(context, 0, snooze, 0);
-        PendingIntent lockScreenPending = PendingIntent.getBroadcast(context, 0, snooze, 0);
+        PendingIntent deactivatePending = PendingIntent.getBroadcast(context, 0, snooze, 0);
 
-        notification.builder.addAction(R.drawable.ic_snooze, "Fermer l'écran", snoozePending);
-        notification.builder.addAction(R.drawable.ic_snooze, "Désactiver", snoozePending);
-        //notification.builder.addAction(R.drawable.ic_snooze, "Fermer l'écran", lockScreenPending);
-        //.setPriority(android.app.Notification.PRIORITY_HIGH)
-        //.setSmallIcon(R.drawable.ic_notifications_black_24dp)
-        //.setContentTitle(title)
-        //.setContentText(message)
-        //.setDefaults(NotificationCompat.DEFAULT_SOUND | NotificationCompat.DEFAULT_VIBRATE);
+        notification.builder.addAction(R.drawable.ic_snooze, "Ok", snoozePending);
+        notification.builder.addAction(R.drawable.ic_snooze, "Désactiver", deactivatePending);
 
         notification.push(context);
     }
@@ -58,7 +57,16 @@ public class SleepModeNotification extends BroadcastReceiver{
             case(SNOOZE):
                 dismiss(context, SleepModeNotification.CHANID);
                 break;
-            case (LOCK):
+            case (DEACTIVATE):
+                //Create alarm to reactivate
+                SleepModeModel.setSwitchState(context, false);
+                Intent activateIntent = new Intent(context, this.getClass());
+                intent.setAction(REACTIVATE);
+                reactivateIntent = PendingIntent.getBroadcast(context, 0, activateIntent, 0);
+                dismiss(context, SleepModeNotification.CHANID);
+                break;
+            case (REACTIVATE):
+
                 break;
         }
     }

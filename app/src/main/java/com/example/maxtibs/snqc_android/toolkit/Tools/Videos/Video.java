@@ -5,9 +5,16 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaMetadataRetriever;
+import android.media.ThumbnailUtils;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.MediaStore;
 import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.URLUtil;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.VideoView;
@@ -16,6 +23,8 @@ import com.example.maxtibs.snqc_android.R;
 
 import java.util.HashMap;
 import java.util.zip.Inflater;
+
+import static android.media.ThumbnailUtils.createVideoThumbnail;
 
 
 public class Video {
@@ -62,21 +71,26 @@ public class Video {
 
         //Set preview image
         Bitmap bitmap = this.retrieveVideoFrameFromVideo(this.url);
+        //Bitmap bitmap1 = ThumbnailUtils.createVideoThumbnail(this.url, MediaStore.Video.Thumbnails.MINI_KIND);
         BitmapDrawable bitmapDrawable = new BitmapDrawable(context.getResources(), bitmap);
         this.imageView.setBackground(bitmapDrawable);
 
     }
 
     //https://stackoverflow.com/questions/22954894/is-it-possible-to-generate-a-thumbnail-from-a-video-url-in-android
-    private Bitmap retrieveVideoFrameFromVideo(String videoPath)
+    private Bitmap retrieveVideoFrameFromVideo(String url)
     {
         Bitmap bitmap = null;
         MediaMetadataRetriever mediaMetadataRetriever = null;
         try
         {
             mediaMetadataRetriever = new MediaMetadataRetriever();
-            mediaMetadataRetriever.setDataSource(videoPath, new HashMap<String, String>());
-            bitmap = mediaMetadataRetriever.getFrameAtTime(2000000);
+            if (Build.VERSION.SDK_INT >= 14)
+                mediaMetadataRetriever.setDataSource(url, new HashMap<String, String>());
+            else
+                mediaMetadataRetriever.setDataSource(url);
+
+            bitmap = mediaMetadataRetriever.getFrameAtTime(10000, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
         } catch (Exception e) {
             e.printStackTrace();
             //throw new Throwable("Exception in retriveVideoFrameFromVideo(String videoPath)" + e.getMessage());
@@ -90,8 +104,8 @@ public class Video {
     }
 
     public void start(Context context) {
-        Intent intent = new Intent(null, FullscreenVideo.class);
-        intent.putExtra("url", this.url);
+        Intent intent = new Intent(context, FullscreenVideo.class);
+        intent.putExtra("URL", this.url);
         context.startActivity(intent);
     }
 }

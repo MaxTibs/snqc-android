@@ -1,4 +1,4 @@
-package com.example.maxtibs.snqc_android.toolkit.tools;
+package com.example.maxtibs.snqc_android.toolkit.Tools;
 
 public class Tool {
 

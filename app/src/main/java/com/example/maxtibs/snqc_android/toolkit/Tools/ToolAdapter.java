@@ -1,4 +1,4 @@
-package com.example.maxtibs.snqc_android.toolkit.tools;
+package com.example.maxtibs.snqc_android.toolkit.Tools;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,12 +13,12 @@ import java.util.List;
 
 import com.example.maxtibs.snqc_android.R;
 
-public class ExpandableAdapter extends ArrayAdapter<ITool> {
+public class ToolAdapter extends ArrayAdapter<ITool> {
 
     private Context _context;
     private List<ITool> _tools = new ArrayList<ITool>();
 
-    public ExpandableAdapter(Context context, List<ITool> tools) {
+    public ToolAdapter(Context context, List<ITool> tools) {
         super(context, 0, tools);
     }
 

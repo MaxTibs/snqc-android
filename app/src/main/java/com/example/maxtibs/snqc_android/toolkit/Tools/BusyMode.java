@@ -1,10 +1,8 @@
-package com.example.maxtibs.snqc_android.toolkit.tools;
+package com.example.maxtibs.snqc_android.toolkit.Tools;
 
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
-import android.view.View;
 
 import com.example.maxtibs.snqc_android.MainActivity;
 import com.example.maxtibs.snqc_android.R;

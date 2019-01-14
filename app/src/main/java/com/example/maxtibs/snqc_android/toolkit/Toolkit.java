@@ -1,17 +1,14 @@
 package com.example.maxtibs.snqc_android.toolkit;
 
-import android.app.Activity;
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.example.maxtibs.snqc_android.toolkit.tools.BusyMode;
-import com.example.maxtibs.snqc_android.toolkit.tools.ExpandableAdapter;
-import com.example.maxtibs.snqc_android.toolkit.tools.ITool;
-import com.example.maxtibs.snqc_android.toolkit.tools.SleepMode.SleepMode;
-import com.example.maxtibs.snqc_android.toolkit.tools.Tool;
+import com.example.maxtibs.snqc_android.toolkit.Tools.BusyMode;
+import com.example.maxtibs.snqc_android.toolkit.Tools.ToolAdapter;
+import com.example.maxtibs.snqc_android.toolkit.Tools.ITool;
+import com.example.maxtibs.snqc_android.toolkit.Tools.SleepMode.SleepMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +20,7 @@ import java.util.List;
 public class Toolkit {
 
     private List<ITool> _expandablesList = new ArrayList<ITool>();
-    private ExpandableAdapter _expendableAdapter; //Custom adapter
+    private ToolAdapter _expendableAdapter; //Custom adapter
     private View _expandableListView;
 
     public Toolkit(Context context) {
@@ -50,15 +47,15 @@ public class Toolkit {
     }
 
     /**
-     * Create ExpandableAdapter and bind it to a ListView
+     * Create ToolAdapter and bind it to a ListView
      * @param context: current context
      */
     private void createExpandableListView(final Context context) {
 
-        //Create ExpandableAdapter
-        this._expendableAdapter = new ExpandableAdapter(context, this._expandablesList);
+        //Create ToolAdapter
+        this._expendableAdapter = new ToolAdapter(context, this._expandablesList);
 
-        //Create ListView and bind ExpandableAdapter to it
+        //Create ListView and bind ToolAdapter to it
         ListView lv = new ListView(context);
         lv.setAdapter(this._expendableAdapter);
         lv.setDivider(null);
@@ -76,7 +73,7 @@ public class Toolkit {
 
     /**
      *
-     * @return View : The ListView bound to ExpandableAdapter
+     * @return View : The ListView bound to ToolAdapter
      */
     public View getExpandableListView() {
         return this._expandableListView;

@@ -1,4 +1,4 @@
-package com.example.maxtibs.snqc_android.toolkit.tools.SleepMode;
+package com.example.maxtibs.snqc_android.toolkit.Tools.SleepMode;
 
 import android.app.AlarmManager;
 import android.app.KeyguardManager;
@@ -7,17 +7,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.util.Pair;
 
-import com.example.maxtibs.snqc_android.utilities.DayTime;
-import com.example.maxtibs.snqc_android.utilities.TimeRange;
+import com.example.maxtibs.snqc_android.Utilities.TimeRange;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
-import static android.content.Intent.ACTION_BOOT_COMPLETED;
-import static android.content.Intent.ACTION_SCREEN_ON;
 import static android.content.Intent.ACTION_USER_PRESENT;
 
 /**

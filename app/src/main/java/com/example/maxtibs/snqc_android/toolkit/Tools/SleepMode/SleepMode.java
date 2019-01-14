@@ -1,4 +1,4 @@
-package com.example.maxtibs.snqc_android.toolkit.tools.SleepMode;
+package com.example.maxtibs.snqc_android.toolkit.Tools.SleepMode;
 
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -16,8 +16,8 @@ import android.widget.Switch;
 import android.widget.TimePicker;
 
 import com.example.maxtibs.snqc_android.R;
-import com.example.maxtibs.snqc_android.toolkit.tools.ITool;
-import com.example.maxtibs.snqc_android.toolkit.tools.Tool;
+import com.example.maxtibs.snqc_android.toolkit.Tools.ITool;
+import com.example.maxtibs.snqc_android.toolkit.Tools.Tool;
 
 import java.util.Calendar;
 

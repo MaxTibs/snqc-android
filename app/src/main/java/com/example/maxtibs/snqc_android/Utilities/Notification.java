@@ -1,4 +1,4 @@
-package com.example.maxtibs.snqc_android.utilities;
+package com.example.maxtibs.snqc_android.Utilities;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -10,7 +10,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 
 import com.example.maxtibs.snqc_android.R;
-import com.example.maxtibs.snqc_android.toolkit.tools.SleepMode.SleepMode;
+import com.example.maxtibs.snqc_android.toolkit.Tools.SleepMode.SleepMode;
 
 public class Notification {
 

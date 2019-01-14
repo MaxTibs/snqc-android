@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".toolkit.tools.SleepMode.SleepMode" />
+        <activity android:name=".toolkit.Tools.SleepMode.SleepMode" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
@@ -25,7 +25,7 @@
         </activity>
 
         <receiver
-            android:name=".toolkit.tools.SleepMode.SleepModeLifecycle"
+            android:name=".toolkit.Tools.SleepMode.SleepModeLifecycle"
             android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.USER_PRESENT" />
@@ -34,7 +34,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".toolkit.tools.SleepMode.SleepModeNotification"
+            android:name=".toolkit.Tools.SleepMode.SleepModeNotification"
             android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.SCREEN_OFF"/>

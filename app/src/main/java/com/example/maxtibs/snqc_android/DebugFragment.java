@@ -10,8 +10,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.maxtibs.snqc_android.toolkit.tools.SleepMode.SleepModeLifecycle;
-import com.example.maxtibs.snqc_android.toolkit.tools.SleepMode.SleepModeModel;
+import com.example.maxtibs.snqc_android.toolkit.Tools.SleepMode.SleepModeModel;
 
 public class DebugFragment extends Fragment {
 

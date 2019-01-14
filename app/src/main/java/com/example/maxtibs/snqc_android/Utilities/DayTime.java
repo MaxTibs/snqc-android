@@ -1,4 +1,4 @@
-package com.example.maxtibs.snqc_android.utilities;
+package com.example.maxtibs.snqc_android.Utilities;
 
 public class DayTime {
     private int hour = 0;

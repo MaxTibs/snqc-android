@@ -1,4 +1,4 @@
-package com.example.maxtibs.snqc_android.utilities;
+package com.example.maxtibs.snqc_android.Utilities;
 
 import android.content.Context;
 import android.content.SharedPreferences;

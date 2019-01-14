@@ -1,4 +1,4 @@
-package com.example.maxtibs.snqc_android.toolkit.tools;
+package com.example.maxtibs.snqc_android.toolkit.Tools;
 
 import android.content.Context;
 import android.content.Intent;

@@ -49,7 +49,8 @@
                     android:id="@+id/description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Motive à ne pas utiliser son téléphone dans les heures de sommeil planifiées. L'application envoie des notifications lorsque le téléphone est utilisé dans la plage d'heure de sommeil configurée. Les notifications sont envoyées jusqu'à ce que l'écran soit éteinte."/>
+                    android:layout_marginTop="5dp"
+                    android:text="@string/sleepmode_description"/>
             </LinearLayout>
 
             <!--///////////////////////////SEPARATOR/////////////////////////////////////////////-->

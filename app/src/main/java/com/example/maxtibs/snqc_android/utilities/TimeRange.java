@@ -54,15 +54,32 @@ public class TimeRange {
         Calendar min = dayTimeNow(getMin());
         Calendar max = dayTimeNow(getMax());
 
-        /////FIXING RANGE///////
+        /////FIX RANGE///////
 
-        //Check if max < min. If so, add 1 day to max
+        //Check if max < min. If so, add 1 day to max. -> Check if min,max are in order
         if(max.compareTo(min) < 0) {
             max.add(Calendar.DAY_OF_YEAR, 1);
             Log.d("TimeRange", "max < min");
         }
 
-        //Check if min & max is less than now. If so, add 1 day to each
+        //if now < min (since max is tommorow) -> Check if range is too far (1 day)
+        if(now.compareTo(min) < 0) {
+            Calendar minTmp = (Calendar) min.clone();
+            Calendar maxTmp = (Calendar) max.clone();
+
+            minTmp.add(Calendar.DAY_OF_YEAR, -1);
+            maxTmp.add(Calendar.DAY_OF_YEAR, -1);
+
+            //if now > minTmp & now < maxTmp
+            if(now.compareTo(minTmp) >= 0 && now.compareTo(maxTmp) < 0) {
+                //minTmp and maxTmp are ok
+                min = minTmp;
+                max = maxTmp;
+            }
+
+        }
+
+        //Check if min & max is less than now. If so, add 1 day to each. -> Check if range is behind
         if(min.compareTo(now) < 0 && max.compareTo(now) < 0) {
             min.add(Calendar.DAY_OF_YEAR, 1);
             max.add(Calendar.DAY_OF_YEAR, 1);

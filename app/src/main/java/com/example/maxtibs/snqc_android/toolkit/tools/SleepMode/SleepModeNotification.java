@@ -44,7 +44,7 @@ public class SleepModeNotification extends BroadcastReceiver{
 
         switch (action) {
             case(ACTION_SCREEN_OFF):
-                dismiss(context, SleepModeNotification.CHANID);
+                dismiss(context, SleepModeNotification.CHANID); //TODO: Doesn't work on lollipop API 21. Working api HIGHER?
                 break;
         }
     }

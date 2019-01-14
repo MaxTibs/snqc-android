@@ -38,11 +38,8 @@ public class SleepModeLifecycle extends BroadcastReceiver {
     public static final String REMINDER = "SleepModeLifecycle.reminder";
 
     //Intents (alarms)
-    public static PendingIntent phoneUnlockIntent;
     public static PendingIntent timeoutIntent;
     public static PendingIntent reminderIntent;
-
-    public static Calendar reminderDate;
 
     //State machine
     @Override
@@ -128,7 +125,6 @@ public class SleepModeLifecycle extends BroadcastReceiver {
      */
     public static void rebuild(Context context) {
 
-        //TODO: cancel every alarms?
         SleepModeNotification.dismiss(context, SleepModeNotification.CHANID); //Dismiss notification
 
         //Cancel alarm if already exists

@@ -44,8 +44,8 @@ public class VideoFragment extends Fragment {
         VideoAdapter videoAdapter = new VideoAdapter(getContext(), videoArrayList);
 
         //Set video adapter to listview
-        View videoList = getLayoutInflater().inflate(R.layout.video_list, null);
-        ListView lv = videoList.findViewById(R.id.videoListView);
+        View layout = getLayoutInflater().inflate(R.layout.video_list, null);
+        ListView lv = layout.findViewById(R.id.videos_listview);
         lv.setAdapter(videoAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -55,6 +55,6 @@ public class VideoFragment extends Fragment {
             }
         });
 
-        return lv;
+        return layout;
     }
 }

@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -25,11 +26,11 @@ public class VideoFragment extends Fragment {
     public VideoFragment() {}
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         // Defines URL
         URLs.put("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4", "Big Bunny");
         URLs.put("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4", "Elephant Dream");
-        URLs.put("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", "For Bigger Blazes");
+        URLs.put("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", "For Bigger Blaze");
 
         //Defines every video
         ArrayList<Video> videoArrayList = new ArrayList<>();
@@ -46,6 +47,13 @@ public class VideoFragment extends Fragment {
         View videoList = getLayoutInflater().inflate(R.layout.video_list, null);
         ListView lv = videoList.findViewById(R.id.videoListView);
         lv.setAdapter(videoAdapter);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+                Video video = (Video) adapter.getItemAtPosition(position);
+                video.start(getContext());
+            }
+        });
 
         return lv;
     }

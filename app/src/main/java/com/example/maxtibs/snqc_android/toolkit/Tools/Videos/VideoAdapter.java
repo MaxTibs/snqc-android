@@ -9,8 +9,8 @@ import java.util.ArrayList;
 
 public class VideoAdapter extends ArrayAdapter<Video> {
 
-    public VideoAdapter(Context context, ArrayList<Video> videos) {
-        super(context, 0, videos);
+    public VideoAdapter(Context context, ArrayList<Video> mVideo) {
+        super(context, 0, mVideo);
     }
 
     @Override
@@ -22,5 +22,4 @@ public class VideoAdapter extends ArrayAdapter<Video> {
 
         return convertView;
     }
-
-}
+    }

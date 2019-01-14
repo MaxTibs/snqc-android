@@ -1,11 +1,12 @@
 package com.example.maxtibs.snqc_android.toolkit.Tools.SleepMode;
-
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,11 +23,11 @@ import com.example.maxtibs.snqc_android.toolkit.Tools.Tool;
 import java.util.Calendar;
 
 /**
- * SleepMode Tool
+ * SleepModeActivity Tool
  * This tool notify user when he's using it's phone in the configured time range
- * Basically, this class is the SleepMode View. When view changes, it modify backend data
+ * Basically, this class is the SleepModeActivity View. When view changes, it modify backend data
  */
-public class SleepMode extends AppCompatActivity implements ITool {
+public class SleepModeActivity extends AppCompatActivity implements ITool {
 
     private static final int LAYOUT = R.layout.sleepmode_configuration;
     private static final int ICON = R.drawable.ic_sleep_icon;
@@ -36,7 +37,7 @@ public class SleepMode extends AppCompatActivity implements ITool {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Inflate SleepMode View
+        //Inflate SleepModeActivity View
         final LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(LAYOUT, null);
 
@@ -75,7 +76,21 @@ public class SleepMode extends AppCompatActivity implements ITool {
 
         //Create view
         setContentView(view);
+        setTitle(NAME);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
         overridePendingTransition(R.xml.slide_in_right, R.xml.stay);
+    }
+
+    /**
+     * Override action to do on back button click
+     * @param item
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        finish();
+        return true;
     }
 
     @Override

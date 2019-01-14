@@ -6,9 +6,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.maxtibs.snqc_android.toolkit.Tools.BusyMode;
+import com.example.maxtibs.snqc_android.toolkit.Tools.GrayScaleMode.GrayScaleModeActivity;
+import com.example.maxtibs.snqc_android.toolkit.Tools.SleepMode.SleepModeActivity;
 import com.example.maxtibs.snqc_android.toolkit.Tools.ToolAdapter;
 import com.example.maxtibs.snqc_android.toolkit.Tools.ITool;
-import com.example.maxtibs.snqc_android.toolkit.Tools.SleepMode.SleepMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,23 +20,23 @@ import java.util.List;
  */
 public class Toolkit {
 
-    private List<ITool> _expandablesList = new ArrayList<ITool>();
-    private ToolAdapter _expendableAdapter; //Custom adapter
-    private View _expandableListView;
+    private List<ITool> toolList = new ArrayList<ITool>();
+    private ToolAdapter toolAdapter; //Custom adapter
+    private View view;
 
     public Toolkit(Context context) {
         //Create tools : Create tools here
-        ITool sleepMode = new SleepMode();
+        ITool sleepMode = new SleepModeActivity();
         ITool busyMode = new BusyMode(context);
-        //Tool grayscaleMode = new GrayScaleMode(context);
+        ITool grayscaleMode = new GrayScaleModeActivity();
 
         //Add tools into list here
         this.addTool(sleepMode);
         this.addTool(busyMode);
-        //this.addTool(grayscaleMode);
+        this.addTool(grayscaleMode);
 
         //Create expandable list of tools
-        this.createExpandableListView(context);
+        this.createView(context);
     }
 
     /**
@@ -43,21 +44,21 @@ public class Toolkit {
      * @param tool: Tool to add
      */
     private void addTool(ITool tool) {
-        this._expandablesList.add(tool);
+        this.toolList.add(tool);
     }
 
     /**
      * Create ToolAdapter and bind it to a ListView
      * @param context: current context
      */
-    private void createExpandableListView(final Context context) {
+    private void createView(final Context context) {
 
         //Create ToolAdapter
-        this._expendableAdapter = new ToolAdapter(context, this._expandablesList);
+        this.toolAdapter = new ToolAdapter(context, this.toolList);
 
         //Create ListView and bind ToolAdapter to it
         ListView lv = new ListView(context);
-        lv.setAdapter(this._expendableAdapter);
+        lv.setAdapter(this.toolAdapter);
         lv.setDivider(null);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -66,17 +67,15 @@ public class Toolkit {
                 context.startActivity(t.getIntent(context));
             }
         });
-
-        //Store ListView in local attribute
-        this._expandableListView = lv;
+        view = lv;
     }
 
     /**
      *
      * @return View : The ListView bound to ToolAdapter
      */
-    public View getExpandableListView() {
-        return this._expandableListView;
+    public View getView() {
+        return this.view;
     }
 
 }

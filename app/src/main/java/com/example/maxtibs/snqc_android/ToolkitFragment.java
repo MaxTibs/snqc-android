@@ -17,6 +17,6 @@ public class ToolkitFragment extends Fragment {
 
         //Return toolkit view (list of Tools)
         Toolkit toolkit = new Toolkit(getContext());
-        return toolkit.getExpandableListView();
+        return toolkit.getView();
     }
 }

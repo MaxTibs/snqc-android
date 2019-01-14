@@ -1,11 +1,11 @@
 package com.example.maxtibs.snqc_android.toolkit.Tools.Videos;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaMetadataRetriever;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,12 +15,14 @@ import android.widget.VideoView;
 import com.example.maxtibs.snqc_android.R;
 
 import java.util.HashMap;
+import java.util.zip.Inflater;
 
 
 public class Video {
 
     public String url;
     public String title;
+
 
     private final int TITLE_ID = R.id.video_title;
     //private final int PLAY_BTN_ID = R.id.btn_play_pause;
@@ -65,27 +67,6 @@ public class Video {
 
     }
 
-
-    /*private void initImageButton(View view) {
-        final ImageButton playBtn = view.findViewById(this.PLAY_BTN_ID);
-        playBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (isPlaying) {
-
-                    videoView.pause();
-                    isPlaying = false;
-                    playBtn.setImageResource(R.drawable.ic_play);
-                } else {
-                    videoView.start();
-                    isPlaying = true;
-                    playBtn.setImageResource(R.drawable.ic_stop);
-                }
-            }
-        });
-    }*/
-
     //https://stackoverflow.com/questions/22954894/is-it-possible-to-generate-a-thumbnail-from-a-video-url-in-android
     private Bitmap retrieveVideoFrameFromVideo(String videoPath)
     {
@@ -108,4 +89,9 @@ public class Video {
         return bitmap;
     }
 
+    public void start(Context context) {
+        Intent intent = new Intent(null, FullscreenVideo.class);
+        intent.putExtra("url", this.url);
+        context.startActivity(intent);
+    }
 }

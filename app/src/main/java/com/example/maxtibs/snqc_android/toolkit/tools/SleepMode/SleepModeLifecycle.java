@@ -12,9 +12,12 @@ import android.util.Pair;
 import com.example.maxtibs.snqc_android.utilities.DayTime;
 import com.example.maxtibs.snqc_android.utilities.TimeRange;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import static android.content.Intent.ACTION_BOOT_COMPLETED;
+import static android.content.Intent.ACTION_SCREEN_ON;
 import static android.content.Intent.ACTION_USER_PRESENT;
 
 /**
@@ -62,9 +65,8 @@ public class SleepModeLifecycle extends BroadcastReceiver {
             //Handlers (states)
             switch (intentAction) {
                 //LEVEL 1 EVENTS
-                case ACTION_USER_PRESENT: //Android event: Phone got unlocked
-                    //phoneUnlockAction(context);
-                    Log.d(DTAG, "PHONE UNLOCK!");
+                case ACTION_USER_PRESENT:
+                    notifyAndResetReminder(context);
                     break;
                 case TIMEOUT: //Custom event: SleepModeLifecycle.timeout
                     timeoutAction(context);
@@ -166,8 +168,8 @@ public class SleepModeLifecycle extends BroadcastReceiver {
         //Next reminder is now + REMINDER_DELAY
         Calendar nextReminder = Calendar.getInstance();
         nextReminder.setTimeInMillis(Calendar.getInstance().getTimeInMillis() + 1000*60*SleepModeModel.getReminderDelay(context));
-        reminderDate = nextReminder;
-
+        String date = new SimpleDateFormat("H'h'mm").format(nextReminder.getTime());
+        SleepModeModel.setNextReminderDate(context, date);
         //Set next alarm
         setAlarm(context, nextReminder.getTimeInMillis(), SleepModeLifecycle.reminderIntent);
         Log.d(DTAG, "Next reminder set to trigger at " + nextReminder.getTime().toString());

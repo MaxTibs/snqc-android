@@ -3,6 +3,7 @@
     package="com.example.maxtibs.snqc_android">
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
@@ -27,7 +28,7 @@
             android:name=".toolkit.tools.SleepMode.SleepModeLifecycle"
             android:enabled="true">
             <intent-filter>
-                <action android:name="android.intent.action.ACTION_USER_PRESENT" />
+                <action android:name="android.intent.action.USER_PRESENT" />
                 <action android:name="SleepModeAction.timeout" />
                 <action android:name="SleepModeAction.reminder" />
             </intent-filter>
@@ -36,8 +37,7 @@
             android:name=".toolkit.tools.SleepMode.SleepModeNotification"
             android:enabled="true">
             <intent-filter>
-                <action android:name="SleepModeNotification.snooze" />
-                <action android:name="SleepModeNotification.lock" />
+                <action android:name="android.intent.action.SCREEN_OFF"/>
             </intent-filter>
         </receiver>
 

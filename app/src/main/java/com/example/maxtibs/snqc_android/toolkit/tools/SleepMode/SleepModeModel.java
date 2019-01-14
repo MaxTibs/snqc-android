@@ -17,6 +17,7 @@ public class SleepModeModel {
     private static final String END_TIME_MINUTE = "SleepModeModel.sleep_end.minute";
     private static final String SWITCH_STATE = "SleepModeModel.switch";
     private static final String REMINDER_DELAY = "SleepModeModel.reminder_delay";
+    private static final String NEXT_REMINDER_DATE = "SleepModeModel.next_reminder";
 
     private static final int DEFAULT = 0;
 
@@ -121,7 +122,7 @@ public class SleepModeModel {
 
     public static Integer getReminderDelay(Context context) {
         SharedPreferences sharedPreferences = LocalStorage.getSharedPreferences(context, FILENAME);
-        return sharedPreferences.getInt(REMINDER_DELAY, recall_delays[2]);
+        return sharedPreferences.getInt(REMINDER_DELAY, recall_delays[0]);
     }
     public static Integer getReminderPositionInArray(Context context) {
         Integer val = getReminderDelay(context);
@@ -131,6 +132,16 @@ public class SleepModeModel {
             }
         }
         return 0;
+    }
+
+    public static void setNextReminderDate(Context context, String date) {
+        SharedPreferences.Editor editor = LocalStorage.getEditor(context, FILENAME);
+        editor.putString(NEXT_REMINDER_DATE, date);
+        editor.commit();
+    }
+    public static String getNextReminderDate(Context context) {
+        SharedPreferences sharedPreferences = LocalStorage.getSharedPreferences(context,FILENAME);
+        return sharedPreferences.getString(NEXT_REMINDER_DATE, "UNDEFINED");
     }
 
     /**

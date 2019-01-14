@@ -53,6 +53,7 @@ public class Notification {
             .setContentText(quickMsg)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(pendingIntent)
+            .setVisibility(android.app.Notification.VISIBILITY_SECRET)
             .setOngoing(true);
             //.setAutoCancel(true); //false: notification is persistent
     }

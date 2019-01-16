@@ -14,7 +14,6 @@ import static android.content.ContentValues.TAG;
 
 public class FullscreenVideo extends Activity {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,7 +21,7 @@ public class FullscreenVideo extends Activity {
         //TODO: VOIR DOC -> https://www.techotopia.com/index.php/An_Android_Studio_VideoView_and_MediaController_Tutorial
         String url = getIntent().getExtras().getString("URL");
 
-        final VideoView videoView = (VideoView) findViewById(R.id.video_fullscreen_videoView);
+        final VideoView videoView = findViewById(R.id.video_fullscreen_videoView);
 
         videoView.setVideoPath(url);
 

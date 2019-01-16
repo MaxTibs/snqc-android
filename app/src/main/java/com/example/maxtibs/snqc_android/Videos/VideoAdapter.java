@@ -1,4 +1,4 @@
-package com.example.maxtibs.snqc_android.toolkit.Tools.Videos;
+package com.example.maxtibs.snqc_android.Videos;
 
 import android.content.Context;
 import android.view.View;

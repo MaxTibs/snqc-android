@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="200dp"
     android:padding="15dp">
 
         <ImageView
             android:id="@+id/video_imageView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="10"
             card_view:srcCompat="@drawable/ic_play"
             android:scaleType="fitCenter"

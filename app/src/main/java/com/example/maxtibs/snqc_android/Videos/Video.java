@@ -1,30 +1,19 @@
-package com.example.maxtibs.snqc_android.toolkit.Tools.Videos;
+package com.example.maxtibs.snqc_android.Videos;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaMetadataRetriever;
-import android.media.ThumbnailUtils;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Build;
-import android.provider.MediaStore;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.webkit.URLUtil;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import com.example.maxtibs.snqc_android.R;
 
 import java.util.HashMap;
-import java.util.zip.Inflater;
-
-import static android.media.ThumbnailUtils.createVideoThumbnail;
 
 
 public class Video {
@@ -90,7 +79,7 @@ public class Video {
             else
                 mediaMetadataRetriever.setDataSource(url);
 
-            bitmap = mediaMetadataRetriever.getFrameAtTime(10000, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
+            bitmap = mediaMetadataRetriever.getFrameAtTime(2000000, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
         } catch (Exception e) {
             e.printStackTrace();
             //throw new Throwable("Exception in retriveVideoFrameFromVideo(String videoPath)" + e.getMessage());

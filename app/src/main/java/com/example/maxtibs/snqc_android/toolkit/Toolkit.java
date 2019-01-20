@@ -60,6 +60,7 @@ public class Toolkit {
         ListView lv = new ListView(context);
         lv.setAdapter(this.toolAdapter);
         lv.setDivider(null);
+        //Return toolView when clicking on list tool
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {

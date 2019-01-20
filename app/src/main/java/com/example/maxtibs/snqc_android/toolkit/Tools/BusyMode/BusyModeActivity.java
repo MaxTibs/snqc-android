@@ -42,6 +42,7 @@ public class BusyModeActivity extends AppCompatActivity implements ITool {
 
     //Timer
     private static CountDownTimer countDownTimer = null;
+    public static boolean isActive = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +128,8 @@ public class BusyModeActivity extends AppCompatActivity implements ITool {
         });
     }
     private void configureButton(){
+        if(lastSeekBarProgress == 0) button.setEnabled(false);
+        if(isActive) button.setText(getString(R.string.button_stop));
         //Action to do on button click
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,7 +158,11 @@ public class BusyModeActivity extends AppCompatActivity implements ITool {
      */
     private void reset() {
         //Link Clock textView to slider
-        if(countDownTimer != null) countDownTimer.cancel();
+        if(countDownTimer != null){
+            countDownTimer.cancel();
+            countDownTimer = null;
+            isActive = false;
+        }
         setSeekBarProgress(0);
         seekBar.setEnabled(true);
         setClockView(clockStringFormat(0, 0, 0));
@@ -178,12 +185,10 @@ public class BusyModeActivity extends AppCompatActivity implements ITool {
         BusyModeActivity.countDownTimer = new CountDownTimer(ms, 1000) {
             //Update view onTick
             public void onTick(long millisUntilFinished) {
-
+                isActive = true;
                 long seconds = (millisUntilFinished / 1000) % 60;
                 long minutes = (millisUntilFinished / (1000*60)) % 60;
                 long hour = (millisUntilFinished / (1000*60*60)) % 24;
-
-                //Format displayed remaining time
 
                 //update text
                 setClockView(clockStringFormat(hour, minutes, seconds));
@@ -194,6 +199,7 @@ public class BusyModeActivity extends AppCompatActivity implements ITool {
             //When time is elapsed
             public void onFinish() {
                 setClockView("Temps écoulé!");
+                isActive = false;
             }
         }.start();
     }

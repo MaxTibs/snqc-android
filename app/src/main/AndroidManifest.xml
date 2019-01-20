@@ -35,6 +35,14 @@
             </intent-filter>
         </receiver>
         <receiver
+            android:name=".toolkit.Tools.BusyMode.BusyModeLifeCycle"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="BusyModeLifecycle.reminder" />
+            </intent-filter>
+        </receiver>
+        <receiver
             android:name=".toolkit.Tools.SleepMode.SleepModeNotification"
             android:enabled="true">
             <intent-filter>

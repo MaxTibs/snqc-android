@@ -11,8 +11,11 @@ import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.maxtibs.snqc_android.R;
@@ -36,13 +39,8 @@ public class BusyModeActivity extends AppCompatActivity implements ITool {
     private final int SEEKBAR_UNIT_M = SEEKBAR_UNIT_S / 60;
     private final int SEEKBAR_MAX_PROGRESS = 8*60 / SEEKBAR_UNIT_M; //8h
 
-    //To persist time throug multiple activity open
-    private static String lastClockUpdate = null;
-    private static int lastSeekBarProgress = 0;
-
     //Timer
     private static CountDownTimer countDownTimer = null;
-    public static boolean isActive = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +55,25 @@ public class BusyModeActivity extends AppCompatActivity implements ITool {
         configureClockTxt();
         configureSeekbar();
         configureButton();
+
+        //Dropdown reminder preference
+        final Context context = this;
+        ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, BusyModeModel.recall_delays);
+        Spinner spinner = findViewById(R.id.busymode_reminder_dropdown);
+        spinner.setAdapter(arrayAdapter);
+        spinner.setSelection(BusyModeModel.getReminderPositionInArray(this));
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Integer selected = (Integer) parent.getItemAtPosition(position);
+                BusyModeModel.setReminderDelay(context, selected);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                return;
+            }
+        });
 
         //Activity configuration
         ActionBar actionBar = getSupportActionBar();
@@ -82,13 +99,13 @@ public class BusyModeActivity extends AppCompatActivity implements ITool {
 
     private void configureSeekbar() {
         seekBar.setMax(SEEKBAR_MAX_PROGRESS);
-        seekBar.setProgress(lastSeekBarProgress);
+        seekBar.setProgress(BusyModeModel.getSeekbarProgressValue(this));
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 int hour = progress * 15 / 60;
                 int minutes = progress * 15 % 60;
-                setClockView(clockStringFormat(hour, minutes, 0));
+                setClockValue(clockStringFormat(hour, minutes, 0));
                 button.setEnabled(progress > 0);
             }
 
@@ -102,14 +119,13 @@ public class BusyModeActivity extends AppCompatActivity implements ITool {
 
             }
         });
-
-        if(countDownTimer == null) return;
     }
     private void configureClockTxt(){
-        if(lastClockUpdate == null) {
-            setClockView(clockStringFormat(0, 0, 0));
+        String clockValue = BusyModeModel.getClockValue(this);
+        if(clockValue == null) {
+            setClockValue(clockStringFormat(0, 0, 0));
         } else {
-            clockView.setText(lastClockUpdate);
+            clockView.setText(clockValue);
         }
         clockView.addTextChangedListener(new TextWatcher() {
             @Override
@@ -128,8 +144,9 @@ public class BusyModeActivity extends AppCompatActivity implements ITool {
         });
     }
     private void configureButton(){
-        if(lastSeekBarProgress == 0) button.setEnabled(false);
-        if(isActive) button.setText(getString(R.string.button_stop));
+        final Context context = this;
+        if(BusyModeModel.getSeekbarProgressValue(this) == 0) button.setEnabled(false);
+        if(BusyModeModel.isActivate(this)) button.setText(getString(R.string.button_stop));
         //Action to do on button click
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,6 +166,7 @@ public class BusyModeActivity extends AppCompatActivity implements ITool {
                 } else { //Reset timer
                     reset();
                 }
+                BusyModeModel.notifyLifecycle(context);
             }
         });
     }
@@ -160,13 +178,13 @@ public class BusyModeActivity extends AppCompatActivity implements ITool {
         //Link Clock textView to slider
         if(countDownTimer != null){
             countDownTimer.cancel();
-            countDownTimer = null;
-            isActive = false;
         }
-        setSeekBarProgress(0);
+        countDownTimer = null;
+        BusyModeModel.activate(this, false);
+        setSeekBarProgressValue(0);
         seekBar.setEnabled(true);
-        setClockView(clockStringFormat(0, 0, 0));
-        clockView.setText(lastClockUpdate);
+        setClockValue(clockStringFormat(0, 0, 0));
+        clockView.setText(BusyModeModel.getClockValue(this));
         button.setEnabled(false);
         button.setText(getString(R.string.button_start));
         seekBar.setOnTouchListener(new View.OnTouchListener() {
@@ -182,38 +200,55 @@ public class BusyModeActivity extends AppCompatActivity implements ITool {
      * @param ms amount of time that the busyMode should be activate
      */
     private void start(long ms) {
+        final Context context = this;
         BusyModeActivity.countDownTimer = new CountDownTimer(ms, 1000) {
             //Update view onTick
             public void onTick(long millisUntilFinished) {
-                isActive = true;
+                BusyModeModel.activate(context, true);
                 long seconds = (millisUntilFinished / 1000) % 60;
                 long minutes = (millisUntilFinished / (1000*60)) % 60;
                 long hour = (millisUntilFinished / (1000*60*60)) % 24;
 
                 //update text
-                setClockView(clockStringFormat(hour, minutes, seconds));
+                setClockValue(clockStringFormat(hour, minutes, seconds));
                 //update seekbar
                 double seekbarProgress = Math.ceil((double)millisUntilFinished / (SEEKBAR_UNIT_MS));
-                setSeekBarProgress((int)seekbarProgress);
+                setSeekBarProgressValue((int)seekbarProgress);
+
             }
             //When time is elapsed
             public void onFinish() {
-                setClockView("Temps écoulé!");
-                isActive = false;
+                setClockValue("Temps écoulé!");
+                BusyModeModel.activate(context, false);
             }
         }.start();
     }
 
-    private void setClockView(String str) {
-        lastClockUpdate = str;
-        clockView.setText(str);
+    /**
+     * Store clock value in model and update view
+     * @param clockValue
+     */
+    private void setClockValue(String clockValue) {
+        BusyModeModel.setClockValue(this, clockValue);
+        clockView.setText(clockValue);
     }
-    private void setSeekBarProgress(int progress) {
-        lastSeekBarProgress = progress;
-        seekBar.setProgress(progress);
+    /**
+     * Store progress value in model and update view
+     * @param progressValue
+     */
+    private void setSeekBarProgressValue(int progressValue) {
+        BusyModeModel.setSeekbarProgressValue(this, progressValue);
+        seekBar.setProgress(progressValue);
     }
 
-    private String clockStringFormat(long hour, long minutes, long seconds) {
+    /**
+     * Format hour, minutes and seconds to a displayable string time
+     * @param hour
+     * @param minutes
+     * @param seconds
+     * @return
+     */
+    private static String clockStringFormat(long hour, long minutes, long seconds) {
         DecimalFormat formattter = new DecimalFormat("00");
         String twoDigitsMinutes = formattter.format(minutes);
         String twoDigitsSeconds = formattter.format(seconds);

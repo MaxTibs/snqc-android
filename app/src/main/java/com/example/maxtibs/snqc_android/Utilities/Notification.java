@@ -10,7 +10,6 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 
 import com.example.maxtibs.snqc_android.R;
-import com.example.maxtibs.snqc_android.toolkit.Tools.SleepMode.SleepModeActivity;
 
 public class Notification {
 
@@ -37,13 +36,12 @@ public class Notification {
      * @param context
      * @param title
      * @param message
+     * @param configPage ToolActivity
      */
-    public void setDefaultNotification(Context context, String title, String quickMsg, String msg) {
+    public void setDefaultNotification(Context context, String title, String quickMsg, String msg, Intent configPage) {
 
         // Create an explicit intent for an Activity in your app
-        Intent intent = new Intent(context, SleepModeActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, configPage, 0);
 
         this.builder = new NotificationCompat.Builder(context, this._channelId)
             .setDefaults(NotificationCompat.DEFAULT_ALL)

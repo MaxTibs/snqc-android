@@ -11,7 +11,6 @@ import static android.content.Intent.ACTION_SCREEN_OFF;
 
 public class SleepModeNotification extends BroadcastReceiver{
 
-
     public static final String CHANID = "0";
 
     public static void notify(Context context) {
@@ -23,7 +22,7 @@ public class SleepModeNotification extends BroadcastReceiver{
 
         //Send notification to user
         Notification notification = new Notification(context, CHANID, "Chan", "desc");
-        notification.setDefaultNotification(context, "SNQC - Mode sommeil", quickMsg, msg);
+        notification.setDefaultNotification(context, "SNQC - Mode sommeil", quickMsg, msg, new Intent(context, SleepModeActivity.class));
 
         notification.push(context);
     }

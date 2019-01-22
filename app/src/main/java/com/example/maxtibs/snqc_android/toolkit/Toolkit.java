@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.example.maxtibs.snqc_android.toolkit.Tools.BusyMode;
+import com.example.maxtibs.snqc_android.toolkit.Tools.BusyMode.BusyModeActivity;
 import com.example.maxtibs.snqc_android.toolkit.Tools.GrayScaleMode.GrayScaleModeActivity;
 import com.example.maxtibs.snqc_android.toolkit.Tools.SleepMode.SleepModeActivity;
 import com.example.maxtibs.snqc_android.toolkit.Tools.ToolAdapter;
@@ -27,7 +27,7 @@ public class Toolkit {
     public Toolkit(Context context) {
         //Create tools : Create tools here
         ITool sleepMode = new SleepModeActivity();
-        ITool busyMode = new BusyMode(context);
+        ITool busyMode = new BusyModeActivity();
         ITool grayscaleMode = new GrayScaleModeActivity();
 
         //Add tools into list here
@@ -60,6 +60,7 @@ public class Toolkit {
         ListView lv = new ListView(context);
         lv.setAdapter(this.toolAdapter);
         lv.setDivider(null);
+        //Return toolView when clicking on list tool
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {

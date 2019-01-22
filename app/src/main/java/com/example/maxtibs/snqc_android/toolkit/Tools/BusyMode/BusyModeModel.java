@@ -53,7 +53,9 @@ public class BusyModeModel {
 
         //Reset reminder
         BusyModeLifeCycle.setReminder(context);
-        BusyModeNotification.notify(context);
+
+        //Reset timer if active
+        if(BusyModeModel.isActivate(context)) BusyModeNotification.notify(context);
     }
 
     public static Integer getReminderDelay(Context context) {

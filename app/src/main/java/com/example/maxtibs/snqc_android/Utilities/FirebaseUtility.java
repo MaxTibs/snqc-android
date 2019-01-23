@@ -1,4 +1,4 @@
-package com.example.maxtibs.snqc_android.utilities;
+package com.example.maxtibs.snqc_android.Utilities;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -18,6 +18,9 @@ public class FirebaseUtility {
     }
 
     public static void logExemple() {
+        String id = "1";
+        String name = "test";
+
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);

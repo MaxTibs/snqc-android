@@ -57,9 +57,7 @@
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@xml/slide_in_up" />
-        <activity android:name=".toolkit.Tools.GrayScaleMode.GrayScaleModeActivity">
-        </activity>
-        <activity android:name=".toolkit.Tools.Videos.FullscreenVideo"
+        <activity android:name=".toolkit.Tools.GrayScaleMode.GrayScaleModeActivity"/>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"

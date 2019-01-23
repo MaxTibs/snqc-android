@@ -30,14 +30,15 @@ public class GrayScaleUtility {
      * @param context: current context of the app
      * @return true if developer options is enabled, false otherwise
      */
+    @SuppressWarnings("deprecation")
     public static boolean isDeveloperOptionsEnabled(Context context) {
         int devOptions = Settings.Global.getInt(context.getContentResolver(),Settings.Global.DEVELOPMENT_SETTINGS_ENABLED,-1);
 
         ContentResolver contentResolver = context.getContentResolver();
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP){
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             // Do something for lollipop and above versions
             return Settings.Global.getInt(contentResolver, Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0) == 1;
-        } else{
+        } else {
             // do something for phones running an SDK before lollipop
             return Settings.Global.getInt(context.getContentResolver(), Settings.Secure.ADB_ENABLED, 0) == 1;
         }

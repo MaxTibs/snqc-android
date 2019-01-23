@@ -1,4 +1,4 @@
-package com.example.maxtibs.snqc_android.toolkit.Tools.Videos;
+package com.example.maxtibs.snqc_android.Videos;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.maxtibs.snqc_android.R;
-import com.example.maxtibs.snqc_android.utilities.VideoUtility;
+import com.example.maxtibs.snqc_android.Utilities.VideoUtility;
 
 import java.util.ArrayList;
 

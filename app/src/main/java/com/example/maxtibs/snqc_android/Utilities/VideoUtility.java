@@ -1,4 +1,4 @@
-package com.example.maxtibs.snqc_android.utilities;
+package com.example.maxtibs.snqc_android.Utilities;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -35,7 +35,7 @@ public class VideoUtility {
         return bitmap;
     }
 
-    public static void saveToCahche(Context context, Video video, Bitmap bitmap){
+    public static void saveToCache(Context context, Video video, Bitmap bitmap){
         if(bitmap != null) Cache.getInstance(context).getLru().put(video.imageName, bitmap);
     }
 

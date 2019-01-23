@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.maxtibs.snqc_android.Videos.Video;
-import com.example.maxtibs.snqc_android.utilities.VideoUtility;
+import com.example.maxtibs.snqc_android.Utilities.VideoUtility;
 
 import java.util.ArrayList;
 
@@ -55,7 +55,7 @@ public class LoadingActivity extends Activity {
 
         for (Video video : videoArrayList) {
             video.imageName = video.title.replaceAll(" ", "_");
-            VideoUtility.saveToCahche(getApplicationContext(), video, VideoUtility.retrieveVideoFrameFromVideo(video.url));
+            VideoUtility.saveToCache(getApplicationContext(), video, VideoUtility.retrieveVideoFrameFromVideo(video.url));
         }
     }
 }

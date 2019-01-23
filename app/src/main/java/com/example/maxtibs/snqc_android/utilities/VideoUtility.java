@@ -1,19 +1,12 @@
 package com.example.maxtibs.snqc_android.utilities;
 
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.os.Build;
 
 import com.example.maxtibs.snqc_android.Videos.Video;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.HashMap;
 
 public class VideoUtility {

@@ -3,10 +3,7 @@ package com.example.maxtibs.snqc_android.Videos;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.MediaMetadataRetriever;
-import android.os.Build;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +15,6 @@ import com.example.maxtibs.snqc_android.R;
 import com.example.maxtibs.snqc_android.utilities.VideoUtility;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class VideoAdapter extends ArrayAdapter<Video> {
 

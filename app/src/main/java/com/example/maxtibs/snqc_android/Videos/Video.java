@@ -2,22 +2,8 @@ package com.example.maxtibs.snqc_android.Videos;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.media.MediaMetadataRetriever;
-import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.example.maxtibs.snqc_android.R;
-
-import java.util.HashMap;
-
 
 public class Video implements Parcelable {
 

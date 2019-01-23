@@ -11,12 +11,8 @@ import android.widget.ListView;
 
 import com.example.maxtibs.snqc_android.Videos.Video;
 import com.example.maxtibs.snqc_android.Videos.VideoAdapter;
-import com.example.maxtibs.snqc_android.utilities.VideoUtility;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 public class VideoFragment extends Fragment {
 

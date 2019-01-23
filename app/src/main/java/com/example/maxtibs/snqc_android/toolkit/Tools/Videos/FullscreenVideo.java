@@ -46,16 +46,6 @@ public class FullscreenVideo extends Activity {
             });
 
         videoView.start();
-
-
-       /*try {
-            MediaPlayer mp = new MediaPlayer();
-            mp.setDataSource(url);
-            mp.prepare();
-            mp.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
     }
 
 }

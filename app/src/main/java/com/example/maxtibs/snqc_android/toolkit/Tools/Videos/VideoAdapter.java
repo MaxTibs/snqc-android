@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.maxtibs.snqc_android.R;
+import com.example.maxtibs.snqc_android.utilities.VideoUtility;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,49 +58,11 @@ public class VideoAdapter extends ArrayAdapter<Video> {
         viewHolder.title.setText(video.title);
 
         //Set preview image
-//        Bitmap bitmap = this.retrieveVideoFrameFromVideo(video.url);
-//        BitmapDrawable bitmapDrawable = new BitmapDrawable(getContext().getResources(), bitmap);
-//        viewHolder.imageView.setBackground(bitmapDrawable);
+        Bitmap bitmap = VideoUtility.loadThumbnailFromCache(getContext(), video);
+        BitmapDrawable bitmapDrawable = new BitmapDrawable(getContext().getResources(), bitmap);
+        viewHolder.imageView.setBackground(bitmapDrawable);
 
         // Return the completed view to render on screen
         return convertView;
-
-
-//        video.imageView.setTag(position);
-//        video.imageView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                int position = (Integer) v.getTag();
-//                // Access the row position here to get the correct data item
-//                Video video = getItem(position);
-//                video.start(v.getContext());
-//            }
-//        });
-    }
-
-    //https://stackoverflow.com/questions/22954894/is-it-possible-to-generate-a-thumbnail-from-a-video-url-in-android
-    private Bitmap retrieveVideoFrameFromVideo(String url)
-    {
-        Bitmap bitmap = null;
-        MediaMetadataRetriever mediaMetadataRetriever = null;
-        try
-        {
-            mediaMetadataRetriever = new MediaMetadataRetriever();
-            if (Build.VERSION.SDK_INT >= 14)
-                mediaMetadataRetriever.setDataSource(url, new HashMap<String, String>());
-            else
-                mediaMetadataRetriever.setDataSource(url);
-
-            bitmap = mediaMetadataRetriever.getFrameAtTime(2000000, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
-        } catch (Exception e) {
-            e.printStackTrace();
-            //throw new Throwable("Exception in retriveVideoFrameFromVideo(String videoPath)" + e.getMessage());
-
-        } finally {
-            if (mediaMetadataRetriever != null) {
-                mediaMetadataRetriever.release();
-            }
-        }
-        return bitmap;
     }
 }

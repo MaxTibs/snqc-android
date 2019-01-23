@@ -36,7 +36,7 @@ public class VideoUtility {
     }
 
     public static void saveToCahche(Context context, Video video, Bitmap bitmap){
-        Cache.getInstance(context).getLru().put(video.imageName, bitmap);
+        if(bitmap != null) Cache.getInstance(context).getLru().put(video.imageName, bitmap);
     }
 
     public static Bitmap loadThumbnailFromCache(Context context, Video video){

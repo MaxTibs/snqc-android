@@ -11,6 +11,7 @@ import android.widget.ListView;
 
 import com.example.maxtibs.snqc_android.Videos.Video;
 import com.example.maxtibs.snqc_android.Videos.VideoAdapter;
+import com.example.maxtibs.snqc_android.utilities.VideoUtility;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,14 +31,19 @@ public class VideoFragment extends Fragment {
         videoArrayList.add(new Video("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", "For Bigger Blaze"));
         videoArrayList.add(new Video("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4", "For Bigger Escape"));
         videoArrayList.add(new Video("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4", "For Bigger Fun"));
-//        videoArrayList.add(new Video("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4", "For Bigger Joyrides"));
-//        videoArrayList.add(new Video("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4", "For Bigger Meltdowns"));
-//        videoArrayList.add(new Video("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4", "Sintel"));
-//        videoArrayList.add(new Video("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4", "Subaru Outback On Street And Dirt"));
-//        videoArrayList.add(new Video("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4", "Tears of Steel"));
-//        videoArrayList.add(new Video("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4", "Volkswagen GTI Review"));
-//        videoArrayList.add(new Video("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4", "We Are Going On Bullrun"));
-//        videoArrayList.add(new Video("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WhatCarCanYouGetForAGrand.mp4", "What care can you get for a grand?"));
+        videoArrayList.add(new Video("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4", "For Bigger Joyrides"));
+        videoArrayList.add(new Video("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4", "For Bigger Meltdowns"));
+        videoArrayList.add(new Video("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4", "Sintel"));
+        videoArrayList.add(new Video("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4", "Subaru Outback On Street And Dirt"));
+        videoArrayList.add(new Video("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4", "Tears of Steel"));
+        videoArrayList.add(new Video("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4", "Volkswagen GTI Review"));
+        videoArrayList.add(new Video("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4", "We Are Going On Bullrun"));
+        videoArrayList.add(new Video("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WhatCarCanYouGetForAGrand.mp4", "What care can you get for a grand?"));
+
+        for (Video video : videoArrayList) {
+            video.imageName = video.title.replaceAll(" ", "_");
+            VideoUtility.saveToCahche(getContext(), video, VideoUtility.retrieveVideoFrameFromVideo(video.url));
+        }
 
         //Create adapter
         VideoAdapter videoAdapter = new VideoAdapter(getContext(), videoArrayList);

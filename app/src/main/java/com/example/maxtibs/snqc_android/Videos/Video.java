@@ -21,6 +21,7 @@ public class Video {
 
     public String url;
     public String title;
+    public String imageName;
 
     public Video(String url, String title) {
         this.url = url;

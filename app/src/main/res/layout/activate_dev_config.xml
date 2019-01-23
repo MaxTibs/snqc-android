@@ -32,6 +32,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <android.support.constraint.Guideline
+                    android:id="@+id/verticalGuideline"
+                    android:layout_width="1dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.5"/>
+
                 <TextView
                     android:id="@+id/textView2"
                     android:layout_width="wrap_content"
@@ -40,7 +47,10 @@
                     android:maxWidth="500dp"
                     android:text="Pour activer le mode 'ton de gris' sur votre téléphone, veuillez suivre les étapes suivantes"
                     android:textAlignment="center"
-                    app:layout_constraintRight_toRightOf="@id/verticalGuideline"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/verticalGuideline"
+                    app:layout_constraintLeft_toRightOf="@id/verticalGuideline"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
@@ -56,6 +66,8 @@
                     android:textAlignment="viewStart"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/verticalGuideline"
+                    app:layout_constraintLeft_toRightOf="@id/verticalGuideline"
                     app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
                 <Button
@@ -84,6 +96,8 @@
                     android:textAlignment="center"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/verticalGuideline"
+                    app:layout_constraintLeft_toRightOf="@id/verticalGuideline"
                     app:layout_constraintTop_toBottomOf="@+id/openDeviceInfoButton" />
 
                 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -111,6 +125,8 @@
                     android:textAlignment="viewStart"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/verticalGuideline"
+                    app:layout_constraintLeft_toRightOf="@id/verticalGuideline"
                     app:layout_constraintTop_toBottomOf="@+id/image" />
 
             </android.support.constraint.ConstraintLayout>

@@ -69,11 +69,14 @@ public class StepperAdapter extends AbstractFragmentStepAdapter {
             case 0:
                 return new StepViewModel.Builder(context)
                         .setTitle(R.string.grayscale_stepper_first_step_title)
+                        .setEndButtonLabel("SUIVANT")
                         .create();
 
             case 1:
                 return new StepViewModel.Builder(context)
                         .setTitle(R.string.grayscale_stepper_second_step_title)
+                        .setEndButtonLabel("TERMINER")
+                        .setBackButtonLabel("RETOUR")
                         .create();
 
             default:

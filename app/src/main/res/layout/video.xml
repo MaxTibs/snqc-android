@@ -1,0 +1,28 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:padding="15dp">
+
+        <ImageView
+            android:id="@+id/video_imageView"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_weight="10"
+            card_view:srcCompat="@drawable/ic_play"
+            android:scaleType="fitCenter"
+            android:background="@color/ic_launcher_background"
+            android:contentDescription="Video image"/>
+
+        <TextView
+            android:id="@+id/video_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="12"
+            android:layout_marginStart="10dp"
+            android:gravity="center_vertical"
+            tools:text="titre" />
+
+</LinearLayout>

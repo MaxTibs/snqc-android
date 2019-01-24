@@ -1,10 +1,12 @@
 package com.example.maxtibs.snqc_android.toolkit.Tools.BusyMode;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -79,6 +81,20 @@ public class BusyModeActivity extends AppCompatActivity implements ITool {
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
         overridePendingTransition(R.xml.slide_in_right, R.xml.stay);
+        setTitle(NAME);
+
+        AlertDialog.Builder builder;
+        builder = new AlertDialog.Builder(context, android.R.style.Theme_Material_Light_Dialog);
+        builder.setTitle("Comment ça marche?")
+                .setMessage("Configurer le minuteur.\nDes alertes vous seront envoyés périodiquement afin de vous inciter à fermer votre écran de téléphone.\n\nIl est pertinent d'utiliser cette fonctionnalité lorsqu'on désire ne pas utiliser sont téléphone ou ne pas être dérangé pendant une certaine période de temps.")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     /**

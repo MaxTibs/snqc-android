@@ -18,12 +18,9 @@ public class FirebaseUtility {
     }
 
     public static void logExemple() {
-        String id = "1";
-        String name = "test";
-
         Bundle bundle = new Bundle();
-        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
-        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
+       // bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+        //bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
         bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "image");
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }

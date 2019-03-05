@@ -34,16 +34,12 @@ public class BMAction extends Action {
 
     @Override
     protected void execute() {
-        //Notify
-        BMNotification.build(context);
+        //Do nothing
     }
 
     @Override
     protected boolean canReschedule() {
-        boolean isActivate  = BMModel.isActivate(context);
-        boolean phoneUnlock = DeviceUtility.phoneIsUnlock(context);
-
-        return isActivate && phoneUnlock;
+        return true;
     }
 
     @Override
@@ -70,6 +66,10 @@ public class BMAction extends Action {
                 nextReminder.getTimeInMillis(),
                 alarm
         );
+
+        //Rebuild notification
+        BMNotification.dismiss(context);
+        BMNotification.build(context);
     }
 
     private void cancel() {

@@ -23,11 +23,11 @@ import com.example.maxtibs.snqc_android.toolkit.Tools.Tool;
 import java.util.Calendar;
 
 /**
- * SleepModeActivity Tool
+ * SMActivity Tool
  * This tool build user when he's using it's phone in the configured time range
- * Basically, this class is the SleepModeActivity View. When view changes, it modify backend data
+ * Basically, this class is the SMActivity View. When view changes, it modify backend data
  */
-public class SleepModeActivity extends AppCompatActivity implements ITool {
+public class SMActivity extends AppCompatActivity implements ITool {
 
     private static final int LAYOUT = R.layout.sleepmode_configuration;
     private static final int ICON = R.drawable.ic_sleep_icon;
@@ -39,7 +39,7 @@ public class SleepModeActivity extends AppCompatActivity implements ITool {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Inflate SleepModeActivity View
+        //Inflate SMActivity View
         final LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(LAYOUT, null);
 

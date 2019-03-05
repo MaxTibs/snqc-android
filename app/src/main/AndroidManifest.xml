@@ -15,7 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".toolkit.Tools.SleepMode.SleepModeActivity" />
+        <activity android:name=".toolkit.Tools.SleepMode.SMActivity" />
         <activity android:name=".toolkit.Tools.BusyMode.BMActivity" />
         <activity
             android:name=".LoadingActivity"

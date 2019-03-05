@@ -40,8 +40,7 @@ public class SMWarningAction extends Action {
 
     @Override
     protected void execute() {
-        SMNotification.dismiss(context);
-        SMNotification.build(context);
+        //Do nothing
     }
 
     @Override
@@ -72,6 +71,9 @@ public class SMWarningAction extends Action {
                 nextReminder.getTimeInMillis(),
                 alarm
         );
+
+        SMNotification.dismiss(context);
+        SMNotification.build(context);
     }
 
     private void cancel() {
@@ -79,12 +81,6 @@ public class SMWarningAction extends Action {
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             alarmManager.cancel(alarm);
         }
-    }
-
-    private void forceBroadcastOnReceiver() {
-        Intent intent = new Intent();
-        intent.setAction(WARNING_ACTION);
-        context.sendBroadcast(intent);
     }
 
     public void setContext(final Context c) {

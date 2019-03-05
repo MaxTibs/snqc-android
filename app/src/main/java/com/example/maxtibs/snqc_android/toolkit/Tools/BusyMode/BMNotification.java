@@ -12,8 +12,6 @@ public class BMNotification {
 
     public static void build(Context context) {
 
-        dismiss(context);
-
         String quickMsg = "Fermez l'écran";
         String msg = "Fermez l'écran.\nRappel prévu à " + BMModel.getNextReminderDate(context) + "\n\nCliquez sur la notification pour accéder aux paramètres.";
 

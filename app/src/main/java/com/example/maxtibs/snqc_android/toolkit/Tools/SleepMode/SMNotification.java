@@ -17,7 +17,7 @@ public class SMNotification {
 
         //Send notification to user
         Notification notification = new Notification(context, CHANID, "Chan", "desc");
-        notification.setDefaultNotification(context, "SNQC - Mode sommeil", quickMsg, msg, new Intent(context, SleepModeActivity.class));
+        notification.setDefaultNotification(context, "SNQC - Mode sommeil", quickMsg, msg, new Intent(context, SMActivity.class));
 
         notification.push(context);
     }

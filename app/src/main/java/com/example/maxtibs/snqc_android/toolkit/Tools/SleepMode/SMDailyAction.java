@@ -76,7 +76,7 @@ public class SMDailyAction extends Action {
         context.sendBroadcast(intent);
     }
 
-    public void setContext(Context c) {
+    public void setContext(final Context c) {
         this.context = c;
         smWarningAction = new SMWarningAction();
         smWarningAction.setContext(c);
@@ -90,6 +90,7 @@ public class SMDailyAction extends Action {
                             case SMModel.START_TIME_HOUR:
                             case SMModel.END_TIME_HOUR:
                                 cancel();
+                                SMNotification.dismiss(context);
                                 forceBroadcastOnReceiver(); //Rebuild the alarm
                                 break;
                         }

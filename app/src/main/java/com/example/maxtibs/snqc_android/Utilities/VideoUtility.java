@@ -1,4 +1,4 @@
-package com.example.maxtibs.snqc_android.Utilities;
+package com.example.maxtibs.snqc_android.utilities;
 
 import android.content.Context;
 import android.graphics.Bitmap;

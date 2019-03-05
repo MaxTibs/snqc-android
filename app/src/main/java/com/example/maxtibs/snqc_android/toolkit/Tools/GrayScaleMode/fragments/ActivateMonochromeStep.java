@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.maxtibs.snqc_android.R;
-import com.example.maxtibs.snqc_android.Utilities.GrayScaleUtility;
+import com.example.maxtibs.snqc_android.utilities.GrayScaleUtility;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
 

@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.maxtibs.snqc_android.R;
-import com.example.maxtibs.snqc_android.Utilities.VideoUtility;
+import com.example.maxtibs.snqc_android.utilities.VideoUtility;
 
 import java.util.ArrayList;
 

@@ -2,9 +2,9 @@ package com.example.maxtibs.snqc_android.toolkit.Tools.SleepMode;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import com.example.maxtibs.snqc_android.Utilities.DayTime;
-import com.example.maxtibs.snqc_android.Utilities.LocalStorage;
-import com.example.maxtibs.snqc_android.Utilities.TimeRange;
+import com.example.maxtibs.snqc_android.utilities.DayTime;
+import com.example.maxtibs.snqc_android.utilities.LocalStorage;
+import com.example.maxtibs.snqc_android.utilities.TimeRange;
 
 
 public class SleepModeModel {

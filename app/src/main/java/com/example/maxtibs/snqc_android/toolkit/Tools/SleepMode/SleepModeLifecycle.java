@@ -8,7 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.example.maxtibs.snqc_android.Utilities.TimeRange;
+import com.example.maxtibs.snqc_android.utilities.TimeRange;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationManagerCompat;
 
-import com.example.maxtibs.snqc_android.Utilities.Notification;
+import com.example.maxtibs.snqc_android.utilities.Notification;
 
 import static android.content.Intent.ACTION_SCREEN_OFF;
 

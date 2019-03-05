@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.maxtibs.snqc_android.Videos.Video;
-import com.example.maxtibs.snqc_android.Utilities.VideoUtility;
+import com.example.maxtibs.snqc_android.utilities.VideoUtility;
 
 import java.util.ArrayList;
 

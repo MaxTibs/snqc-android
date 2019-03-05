@@ -43,6 +43,7 @@ public class BusyModeActivity extends AppCompatActivity implements ITool {
 
     //Timer
     private static CountDownTimer countDownTimer = null;
+    private static BMAction bmAction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +96,9 @@ public class BusyModeActivity extends AppCompatActivity implements ITool {
                 });
         AlertDialog alert = builder.create();
         alert.show();
+
+        bmAction = new BMAction();
+        bmAction.setContext(this);
     }
 
     /**
@@ -182,7 +186,6 @@ public class BusyModeActivity extends AppCompatActivity implements ITool {
                 } else { //Reset timer
                     reset();
                 }
-                BusyModeModel.notifyLifecycle(context);
             }
         });
     }

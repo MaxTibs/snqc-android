@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 
 import com.example.maxtibs.snqc_android.utilities.LocalStorage;
 
-public class BusyModeModel {
+public class BMModel {
 
     public static final String FILENAME = "BusyMode.data";
 

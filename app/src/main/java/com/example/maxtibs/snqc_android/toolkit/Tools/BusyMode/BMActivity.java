@@ -26,7 +26,7 @@ import com.example.maxtibs.snqc_android.toolkit.Tools.Tool;
 
 import java.text.DecimalFormat;
 
-public class BusyModeActivity extends AppCompatActivity implements ITool {
+public class BMActivity extends AppCompatActivity implements ITool {
 
     private static final int LAYOUT = R.layout.busymode_configiguration;
     private static final int ICON = R.drawable.ic_busy_icon;
@@ -39,7 +39,7 @@ public class BusyModeActivity extends AppCompatActivity implements ITool {
     private final int SEEKBAR_UNIT_MS = 1000*60*15; //15 minutes
     private final int SEEKBAR_UNIT_S = SEEKBAR_UNIT_MS / 1000;
     private final int SEEKBAR_UNIT_M = SEEKBAR_UNIT_S / 60;
-    private final int SEEKBAR_MAX_PROGRESS = 8*60 / SEEKBAR_UNIT_M; //8h
+    private final int SEEKBAR_MAX_PROGRESS = 2*60 / SEEKBAR_UNIT_M; //8h
 
     //Timer
     private static CountDownTimer countDownTimer = null;
@@ -61,15 +61,15 @@ public class BusyModeActivity extends AppCompatActivity implements ITool {
 
         //Dropdown reminder preference
         final Context context = this;
-        ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, BusyModeModel.recall_delays);
+        ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, BMModel.recall_delays);
         Spinner spinner = findViewById(R.id.busymode_reminder_dropdown);
         spinner.setAdapter(arrayAdapter);
-        spinner.setSelection(BusyModeModel.getReminderPositionInArray(this));
+        spinner.setSelection(BMModel.getReminderPositionInArray(this));
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Integer selected = (Integer) parent.getItemAtPosition(position);
-                BusyModeModel.setReminderDelay(context, selected);
+                BMModel.setReminderDelay(context, selected);
             }
 
             @Override
@@ -119,7 +119,7 @@ public class BusyModeActivity extends AppCompatActivity implements ITool {
 
     private void configureSeekbar() {
         seekBar.setMax(SEEKBAR_MAX_PROGRESS);
-        seekBar.setProgress(BusyModeModel.getSeekbarProgressValue(this));
+        seekBar.setProgress(BMModel.getSeekbarProgressValue(this));
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -141,7 +141,7 @@ public class BusyModeActivity extends AppCompatActivity implements ITool {
         });
     }
     private void configureClockTxt(){
-        String clockValue = BusyModeModel.getClockValue(this);
+        String clockValue = BMModel.getClockValue(this);
         if(clockValue == null) {
             setClockValue(clockStringFormat(0, 0, 0));
         } else {
@@ -165,8 +165,8 @@ public class BusyModeActivity extends AppCompatActivity implements ITool {
     }
     private void configureButton(){
         final Context context = this;
-        if(BusyModeModel.getSeekbarProgressValue(this) == 0) button.setEnabled(false);
-        if(BusyModeModel.isActivate(this)) button.setText(getString(R.string.button_stop));
+        if(BMModel.getSeekbarProgressValue(this) == 0) button.setEnabled(false);
+        if(BMModel.isActivate(this)) button.setText(getString(R.string.button_stop));
         //Action to do on button click
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -199,11 +199,11 @@ public class BusyModeActivity extends AppCompatActivity implements ITool {
             countDownTimer.cancel();
         }
         countDownTimer = null;
-        BusyModeModel.activate(this, false);
+        BMModel.activate(this, false);
         setSeekBarProgressValue(0);
         seekBar.setEnabled(true);
         setClockValue(clockStringFormat(0, 0, 0));
-        clockView.setText(BusyModeModel.getClockValue(this));
+        clockView.setText(BMModel.getClockValue(this));
         button.setEnabled(false);
         button.setText(getString(R.string.button_start));
         seekBar.setOnTouchListener(new View.OnTouchListener() {
@@ -220,10 +220,10 @@ public class BusyModeActivity extends AppCompatActivity implements ITool {
      */
     private void start(long ms) {
         final Context context = this;
-        BusyModeActivity.countDownTimer = new CountDownTimer(ms, 1000) {
+        BMActivity.countDownTimer = new CountDownTimer(ms, 1000) {
             //Update view onTick
             public void onTick(long millisUntilFinished) {
-                BusyModeModel.activate(context, true);
+                BMModel.activate(context, true);
                 long seconds = (millisUntilFinished / 1000) % 60;
                 long minutes = (millisUntilFinished / (1000*60)) % 60;
                 long hour = (millisUntilFinished / (1000*60*60)) % 24;
@@ -238,7 +238,7 @@ public class BusyModeActivity extends AppCompatActivity implements ITool {
             //When time is elapsed
             public void onFinish() {
                 setClockValue("Temps écoulé!");
-                BusyModeModel.activate(context, false);
+                BMModel.activate(context, false);
             }
         }.start();
     }
@@ -248,7 +248,7 @@ public class BusyModeActivity extends AppCompatActivity implements ITool {
      * @param clockValue
      */
     private void setClockValue(String clockValue) {
-        BusyModeModel.setClockValue(this, clockValue);
+        BMModel.setClockValue(this, clockValue);
         clockView.setText(clockValue);
     }
     /**
@@ -256,7 +256,7 @@ public class BusyModeActivity extends AppCompatActivity implements ITool {
      * @param progressValue
      */
     private void setSeekBarProgressValue(int progressValue) {
-        BusyModeModel.setSeekbarProgressValue(this, progressValue);
+        BMModel.setSeekbarProgressValue(this, progressValue);
         seekBar.setProgress(progressValue);
     }
 

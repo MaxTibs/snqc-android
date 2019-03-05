@@ -1,4 +1,4 @@
-package com.example.maxtibs.snqc_android.toolkit.Tools.BusyMode;
+package com.example.maxtibs.snqc_android.toolkit.Tools.SleepMode;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -7,67 +7,58 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 
 import com.example.maxtibs.snqc_android.toolkit.Action;
-import com.example.maxtibs.snqc_android.utilities.DeviceUtility;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import com.example.maxtibs.snqc_android.utilities.LocalStorage;
 
-import static android.content.Intent.ACTION_USER_PRESENT;
+import java.util.Calendar;
 
-public class BMAction extends Action {
+public class SMDailyAction extends Action {
 
-    private static final String REMINDER = "BusyModeLifecycle.reminder";
     private PendingIntent alarm;
-
     private static SharedPreferences.OnSharedPreferenceChangeListener onSharedPreferenceChangeListener;
+    public static final String DAILY_ACTION = "SMDailyAction";
+
+    private SMWarningAction smWarningAction;
 
     @Override
     protected boolean canExecute() {
         String intentAction = intent.getAction();
-        boolean isActivate  = BMModel.isActivate(context);
-        boolean intentOK    = intentAction.equals(ACTION_USER_PRESENT) || intentAction.equals(REMINDER);
-        boolean phoneUnlock = DeviceUtility.phoneIsUnlock(context);
-
-        return isActivate && intentOK && phoneUnlock;
+        boolean isActivate  = SMModel.isActivate(context);
+        boolean intentOK    = intentAction.equals(DAILY_ACTION);
+        return isActivate && intentOK;
     }
 
     @Override
     protected void execute() {
-        //Notify
-        BMNotification.build(context);
+        //Trigger WARNING ACTION now
+        Intent intent = new Intent();
+        intent.setAction(SMWarningAction.WARNING_ACTION);
+        context.sendBroadcast(intent);
     }
 
     @Override
     protected boolean canReschedule() {
-        boolean isActivate  = BMModel.isActivate(context);
-        boolean phoneUnlock = DeviceUtility.phoneIsUnlock(context);
-
-        return isActivate && phoneUnlock;
+        return true;
     }
 
     @Override
     protected void reschedule() {
-        //Notify later
-        //Cancel any other reminder alarm
+        //Schedule next timeoutAction 1 day later
+        Calendar startTime = SMModel.getTimeRange(context).getCalendarMin();
+        startTime.add(Calendar.DAY_OF_YEAR, 1); //INCREMENT
+
+        //Cancel alarm if already exists
         cancel();
 
         //Create new alarm
         Intent intent = new Intent(context, getClass());
-        intent.setAction(REMINDER);
+        intent.setAction(DAILY_ACTION);
         alarm = PendingIntent.getBroadcast(context, 0, intent, 0);
-
-        //Next reminder is now + REMINDER_DELAY
-        Calendar nextReminder = Calendar.getInstance();
-        nextReminder.setTimeInMillis(Calendar.getInstance().getTimeInMillis() + 1000*60* BMModel.getReminderDelay(context));
-        String date = new SimpleDateFormat("H'h'mm").format(nextReminder.getTime());
-        BMModel.setNextReminderDate(context, date);
 
         //Set next alarm
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.setExact(
                 AlarmManager.RTC_WAKEUP,
-                nextReminder.getTimeInMillis(),
+                startTime.getTimeInMillis(),
                 alarm
         );
     }
@@ -81,28 +72,29 @@ public class BMAction extends Action {
 
     private void forceBroadcastOnReceiver() {
         Intent intent = new Intent();
-        intent.setAction(REMINDER);
+        intent.setAction(DAILY_ACTION);
         context.sendBroadcast(intent);
     }
 
     public void setContext(Context c) {
         this.context = c;
+        smWarningAction = new SMWarningAction();
+        smWarningAction.setContext(c);
         if(onSharedPreferenceChangeListener != null) return;
-        onSharedPreferenceChangeListener = new
+                onSharedPreferenceChangeListener = new
                 SharedPreferences.OnSharedPreferenceChangeListener() {
                     @Override
                     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
                         switch (key){
-                            case BMModel.SWITCH_STATE:
-                            case BMModel.REMINDER_DELAY:
+                            case SMModel.SWITCH_STATE:
+                            case SMModel.START_TIME_HOUR:
+                            case SMModel.END_TIME_HOUR:
                                 cancel();
-                                BMNotification.dismiss(context);
-                                forceBroadcastOnReceiver();
+                                forceBroadcastOnReceiver(); //Rebuild the alarm
                                 break;
                         }
                     }
                 };
-        LocalStorage.getSharedPreferences(context, BMModel.FILENAME).registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener);
+        LocalStorage.getSharedPreferences(context, SMModel.FILENAME).registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener);
     }
-
 }

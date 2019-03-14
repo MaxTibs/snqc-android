@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.maxtibs.snqc_android.toolkit.Tools.SleepMode.SleepModeModel;
+import com.example.maxtibs.snqc_android.toolkit.Tools.SleepMode.SMModel;
 
 public class DebugFragment extends Fragment {
 
@@ -44,7 +44,7 @@ public class DebugFragment extends Fragment {
         TextView timeoutNext = getRegularText();
         TextView schedule = getRegularText();
         timeoutNext.setText("Range start");
-        schedule.setText(SleepModeModel.getTimeRange(getContext()).getMin().getStringTime());
+        schedule.setText(SMModel.getTimeRange(getContext()).getMin().getStringTime());
         schedule.setTypeface(null, Typeface.ITALIC);
         row1.addView(timeoutNext);
         row1.addView(schedule);
@@ -53,7 +53,7 @@ public class DebugFragment extends Fragment {
         TextView rangeEnd = getRegularText();
         TextView scheduleEnd = getRegularText();
         rangeEnd.setText("Range end");
-        schedule.setText(SleepModeModel.getTimeRange(getContext()).getMax().getStringTime());
+        schedule.setText(SMModel.getTimeRange(getContext()).getMax().getStringTime());
         scheduleEnd.setTypeface(null, Typeface.ITALIC);
 
         row2.addView(rangeEnd);

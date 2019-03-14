@@ -4,17 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import com.example.maxtibs.snqc_android.Utilities.LocalStorage;
+import com.example.maxtibs.snqc_android.utilities.LocalStorage;
 
-public class BusyModeModel {
+public class BMModel {
 
-    private static final String FILENAME = "BusyMode.data";
+    public static final String FILENAME = "BusyMode.data";
 
-    private static final String SWITCH_STATE = "BusyMode.switch";
-    private static final String REMINDER_DELAY = "BusyMode.reminder_delay";
-    private static final String NEXT_REMINDER_DATE = "BusyMode.next_reminder";
-    private static final String CLOCK_VALUE = "Busymode.clock_value";
-    private static final String SEEKBAR_PROGRESS_VALUE = "Busymode.seekbar_progress";
+    public static final String SWITCH_STATE = "BusyMode.switch";
+    public static final String REMINDER_DELAY = "BusyMode.reminder_delay";
+    public static final String NEXT_REMINDER_DATE = "BusyMode.next_reminder";
+    public static final String CLOCK_VALUE = "Busymode.clock_value";
+    public static final String SEEKBAR_PROGRESS_VALUE = "Busymode.seekbar_progress";
 
     private static final int DEFAULT = 0;
 
@@ -50,12 +50,6 @@ public class BusyModeModel {
         SharedPreferences.Editor editor = LocalStorage.getEditor(context, FILENAME);
         editor.putInt(REMINDER_DELAY, minutes);
         editor.commit();
-
-        //Reset reminder
-        BusyModeLifeCycle.setReminder(context);
-
-        //Reset timer if active
-        if(BusyModeModel.isActivate(context)) BusyModeNotification.notify(context);
     }
 
     public static Integer getReminderDelay(Context context) {
@@ -97,16 +91,6 @@ public class BusyModeModel {
     public static int getSeekbarProgressValue(Context context) {
         SharedPreferences sharedPreferences = LocalStorage.getSharedPreferences(context, FILENAME);
         return sharedPreferences.getInt(SEEKBAR_PROGRESS_VALUE, DEFAULT);
-    }
-
-    /**
-     * Notify BusyModeModel to rebuild notifications and logic
-     */
-    public static void notifyLifecycle(Context context) {
-        if(!BusyModeModel.isActivate(context)) BusyModeNotification.dismiss(context);
-        Intent intent = new Intent(context, BusyModeLifeCycle.class);
-        intent.setAction(BusyModeLifeCycle.REMINDER);
-        context.sendBroadcast(intent);
     }
 
 }

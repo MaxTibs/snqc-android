@@ -23,21 +23,23 @@ import com.example.maxtibs.snqc_android.toolkit.Tools.Tool;
 import java.util.Calendar;
 
 /**
- * SleepModeActivity Tool
- * This tool notify user when he's using it's phone in the configured time range
- * Basically, this class is the SleepModeActivity View. When view changes, it modify backend data
+ * SMActivity Tool
+ * This tool build user when he's using it's phone in the configured time range
+ * Basically, this class is the SMActivity View. When view changes, it modify backend data
  */
-public class SleepModeActivity extends AppCompatActivity implements ITool {
+public class SMActivity extends AppCompatActivity implements ITool {
 
     private static final int LAYOUT = R.layout.sleepmode_configuration;
     private static final int ICON = R.drawable.ic_sleep_icon;
     private static final String NAME = "Mode sommeil";
 
+    private static SMDailyAction smDailyAction;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Inflate SleepModeActivity View
+        //Inflate SMActivity View
         final LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(LAYOUT, null);
 
@@ -47,25 +49,25 @@ public class SleepModeActivity extends AppCompatActivity implements ITool {
 
         //Switch on/off listener
         Switch mSwitch = view.findViewById(R.id.sleepmode_switch);
-        mSwitch.setChecked(SleepModeModel.isActivate(this));
+        mSwitch.setChecked(SMModel.isActivate(this));
         final Context context = this;
         mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                SleepModeModel.activate(context, b);
+                SMModel.activate(context, b);
             }
         });
 
         //Dropdown reminder preference
-        ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter<Integer>(context, android.R.layout.simple_spinner_item, SleepModeModel.recall_delays);
+        ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter<Integer>(context, android.R.layout.simple_spinner_item, SMModel.recall_delays);
         Spinner spinner = view.findViewById(R.id.sleepmode_recall_spinner);
         spinner.setAdapter(arrayAdapter);
-        spinner.setSelection(SleepModeModel.getReminderPositionInArray(context));
+        spinner.setSelection(SMModel.getReminderPositionInArray(context));
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Integer selected = (Integer) parent.getItemAtPosition(position);
-                SleepModeModel.setReminderDelay(context, selected);
+                SMModel.setReminderDelay(context, selected);
             }
 
             @Override
@@ -80,6 +82,9 @@ public class SleepModeActivity extends AppCompatActivity implements ITool {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         overridePendingTransition(R.xml.slide_in_right, R.xml.stay);
+
+        smDailyAction = new SMDailyAction();
+        smDailyAction.setContext(this);
     }
 
     /**
@@ -126,11 +131,11 @@ public class SleepModeActivity extends AppCompatActivity implements ITool {
                     final int hour, minute;
                     //Get current time configured
                     if(min) {
-                        hour = SleepModeModel.getTimeRange(context).getMin().getHour();
-                        minute = SleepModeModel.getTimeRange(context).getMin().getMinute();
+                        hour = SMModel.getTimeRange(context).getMin().getHour();
+                        minute = SMModel.getTimeRange(context).getMin().getMinute();
                     } else {
-                        hour = SleepModeModel.getTimeRange(context).getMax().getHour();
-                        minute = SleepModeModel.getTimeRange(context).getMax().getMinute();
+                        hour = SMModel.getTimeRange(context).getMax().getHour();
+                        minute = SMModel.getTimeRange(context).getMax().getMinute();
                     }
 
                     //Opens up a TimePickerDialog
@@ -157,12 +162,12 @@ public class SleepModeActivity extends AppCompatActivity implements ITool {
                             String timeStr;
                             if(min) {
                                 //Update backend min
-                                SleepModeModel.setTimeRangeMin(context, selectedHour, selectedMinute);
-                                timeStr = SleepModeModel.getTimeRange(context).getMin().getStringTime();
+                                SMModel.setTimeRangeMin(context, selectedHour, selectedMinute);
+                                timeStr = SMModel.getTimeRange(context).getMin().getStringTime();
                             } else {
                                 //Update backend max
-                                SleepModeModel.setTimeRangeMax(context, selectedHour, selectedMinute);
-                                timeStr = SleepModeModel.getTimeRange(context).getMax().getStringTime();
+                                SMModel.setTimeRangeMax(context, selectedHour, selectedMinute);
+                                timeStr = SMModel.getTimeRange(context).getMax().getStringTime();
                             }
 
                             //Update view
@@ -178,8 +183,8 @@ public class SleepModeActivity extends AppCompatActivity implements ITool {
             btn.setOnClickListener(onClickListener);
 
             //Initialize displayed on button
-            if(min) btn.setText(SleepModeModel.getTimeRange(context).getMin().getStringTime());
-            else btn.setText(SleepModeModel.getTimeRange(context).getMax().getStringTime());
+            if(min) btn.setText(SMModel.getTimeRange(context).getMin().getStringTime());
+            else btn.setText(SMModel.getTimeRange(context).getMax().getStringTime());
         }
     }
 

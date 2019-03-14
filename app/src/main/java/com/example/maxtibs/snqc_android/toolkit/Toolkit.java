@@ -5,9 +5,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.example.maxtibs.snqc_android.toolkit.Tools.BusyMode.BusyModeActivity;
+import com.example.maxtibs.snqc_android.toolkit.Tools.BusyMode.BMActivity;
 import com.example.maxtibs.snqc_android.toolkit.Tools.GrayScaleMode.GrayScaleModeActivity;
-import com.example.maxtibs.snqc_android.toolkit.Tools.SleepMode.SleepModeActivity;
+import com.example.maxtibs.snqc_android.toolkit.Tools.SleepMode.SMActivity;
 import com.example.maxtibs.snqc_android.toolkit.Tools.ToolAdapter;
 import com.example.maxtibs.snqc_android.toolkit.Tools.ITool;
 
@@ -26,8 +26,8 @@ public class Toolkit {
 
     public Toolkit(Context context) {
         //Create tools : Create tools here
-        ITool sleepMode = new SleepModeActivity();
-        ITool busyMode = new BusyModeActivity();
+        ITool sleepMode = new SMActivity();
+        ITool busyMode = new BMActivity();
         ITool grayscaleMode = new GrayScaleModeActivity();
 
         //Add tools into list here

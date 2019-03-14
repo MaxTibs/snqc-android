@@ -15,8 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".toolkit.Tools.SleepMode.SleepModeActivity" />
-        <activity android:name=".toolkit.Tools.BusyMode.BusyModeActivity" />
+        <activity android:name=".toolkit.Tools.SleepMode.SMActivity" />
+        <activity android:name=".toolkit.Tools.BusyMode.BMActivity" />
         <activity
             android:name=".LoadingActivity"
             android:label="@string/app_name"
@@ -29,17 +29,24 @@
             </intent-filter>
         </activity>
 
+        <!--BROADCASTRECEIVER FOR MODES-->
         <receiver
-            android:name=".toolkit.Tools.SleepMode.SleepModeLifecycle"
+            android:name=".toolkit.Tools.SleepMode.SMWarningAction"
             android:enabled="true">
             <intent-filter>
+                <action android:name="SMWarningAction" />
                 <action android:name="android.intent.action.USER_PRESENT" />
-                <action android:name="SleepModeAction.timeout" />
-                <action android:name="SleepModeAction.reminder" />
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".toolkit.Tools.BusyMode.BusyModeLifeCycle"
+            android:name=".toolkit.Tools.SleepMode.SMDailyAction"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="SMDailyAction" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".toolkit.Tools.BusyMode.BMAction"
             android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.USER_PRESENT" />
@@ -47,7 +54,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".toolkit.Tools.SleepMode.SleepModeNotification"
+            android:name=".toolkit.Tools.SleepMode.SMNotification"
             android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.SCREEN_OFF"/>

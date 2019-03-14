@@ -2,22 +2,22 @@ package com.example.maxtibs.snqc_android.toolkit.Tools.SleepMode;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import com.example.maxtibs.snqc_android.Utilities.DayTime;
-import com.example.maxtibs.snqc_android.Utilities.LocalStorage;
-import com.example.maxtibs.snqc_android.Utilities.TimeRange;
+import com.example.maxtibs.snqc_android.utilities.DayTime;
+import com.example.maxtibs.snqc_android.utilities.LocalStorage;
+import com.example.maxtibs.snqc_android.utilities.TimeRange;
 
 
-public class SleepModeModel {
+public class SMModel {
 
-    private static final String FILENAME = "SleepModeModel.data";
+    public static final String FILENAME = "SMModel.data";
 
-    private static final String START_TIME_HOUR = "SleepModeModel.sleep_start.hour";
-    private static final String START_TIME_MINUTE = "SleepModeModel.sleep_start.minute";
-    private static final String END_TIME_HOUR = "SleepModeModel.sleep_end.hour";
-    private static final String END_TIME_MINUTE = "SleepModeModel.sleep_end.minute";
-    private static final String SWITCH_STATE = "SleepModeModel.switch";
-    private static final String REMINDER_DELAY = "SleepModeModel.reminder_delay";
-    private static final String NEXT_REMINDER_DATE = "SleepModeModel.next_reminder";
+    public static final String START_TIME_HOUR = "SMModel.sleep_start.hour";
+    public static final String START_TIME_MINUTE = "SMModel.sleep_start.minute";
+    public static final String END_TIME_HOUR = "SMModel.sleep_end.hour";
+    public static final String END_TIME_MINUTE = "SMModel.sleep_end.minute";
+    public static final String SWITCH_STATE = "SMModel.switch";
+    public static final String REMINDER_DELAY = "SMModel.reminder_delay";
+    public static final String NEXT_REMINDER_DATE = "SMModel.next_reminder";
 
     private static final int DEFAULT = 0;
 
@@ -59,9 +59,6 @@ public class SleepModeModel {
         editor.putInt(START_TIME_HOUR, hour);
         editor.putInt(START_TIME_MINUTE, minute);
         editor.commit();
-
-        //Cancel & Re-build alarms
-        notifyLifecycle(context);
     }
 
     /**
@@ -77,9 +74,6 @@ public class SleepModeModel {
         editor.putInt(END_TIME_HOUR, hour);
         editor.putInt(END_TIME_MINUTE, minute);
         editor.commit();
-
-        //Cancel & Re-build alarms
-        notifyLifecycle(context);
     }
 
     /**
@@ -101,9 +95,6 @@ public class SleepModeModel {
         SharedPreferences.Editor editor = LocalStorage.getEditor(context, FILENAME);
         editor.putBoolean(SWITCH_STATE, state);
         editor.commit();
-
-        //Cancel & Re-build alarms
-        notifyLifecycle(context);
     }
 
     /**
@@ -115,9 +106,6 @@ public class SleepModeModel {
         SharedPreferences.Editor editor = LocalStorage.getEditor(context, FILENAME);
         editor.putInt(REMINDER_DELAY, minutes);
         editor.commit();
-
-        //Reset reminder
-        SleepModeLifecycle.setReminder(context);
     }
 
     public static Integer getReminderDelay(Context context) {
@@ -142,13 +130,6 @@ public class SleepModeModel {
     public static String getNextReminderDate(Context context) {
         SharedPreferences sharedPreferences = LocalStorage.getSharedPreferences(context,FILENAME);
         return sharedPreferences.getString(NEXT_REMINDER_DATE, "UNDEFINED");
-    }
-
-    /**
-     * Notify SleepModeLifecycle to rebuild notifications and logic
-     */
-    private static void notifyLifecycle(Context context) {
-        SleepModeLifecycle.rebuild(context);
     }
 
 }

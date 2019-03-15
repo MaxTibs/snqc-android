@@ -59,7 +59,7 @@ public class TimeRange {
         //Check if max < min. If so, add 1 day to max. -> Check if min,max are in order
         if(max.compareTo(min) < 0) {
             max.add(Calendar.DAY_OF_YEAR, 1);
-            Log.d("TimeRange", "max < min");
+            //Log.d("TimeRange", "max < min");
         }
 
         //if now < min (since max is tommorow) -> Check if range is too far (1 day)
@@ -83,7 +83,7 @@ public class TimeRange {
         if(min.compareTo(now) < 0 && max.compareTo(now) < 0) {
             min.add(Calendar.DAY_OF_YEAR, 1);
             max.add(Calendar.DAY_OF_YEAR, 1);
-            Log.d("TimeRange", "Not in range");
+            //Log.d("TimeRange", "Not in range");
         }
 
         return new Pair<>(min, max);
@@ -95,7 +95,7 @@ public class TimeRange {
      */
     public Calendar getCalendarMin() {
         Pair<Calendar, Calendar> pair = getCalendarRange();
-        Log.d("TimeRange", "getCalendarMin: " + pair.first.getTime().toString());
+        //Log.d("TimeRange", "getCalendarMin: " + pair.first.getTime().toString());
         return pair.first;
     }
 
@@ -106,5 +106,9 @@ public class TimeRange {
     public Calendar getCalendarMax() {
         Pair<Calendar, Calendar> pair = getCalendarRange();
         return pair.second;
+    }
+
+    public boolean isInRange(Calendar cal) {
+        return cal.compareTo(getCalendarMin()) >= 0 && cal.compareTo(getCalendarMax()) < 0;
     }
 }

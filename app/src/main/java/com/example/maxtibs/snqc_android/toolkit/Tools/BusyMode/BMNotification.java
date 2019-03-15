@@ -8,7 +8,7 @@ import com.example.maxtibs.snqc_android.utilities.Notification;
 
 public class BMNotification {
 
-    public static final String CHANID = "1";
+    public static final String CHANID = "0";
 
     public static void build(Context context) {
 

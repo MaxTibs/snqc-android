@@ -16,12 +16,12 @@
         android:icon="@drawable/ic_toolkit"
         android:title="Toolkit" />
 
-    <!--<item
+    <item
         android:id="@+id/navigation_test"
         android:icon="@drawable/ic_warning"
         android:title="Test" />
 
-    <item
+    <!--<item
         android:id="@+id/navigation_debug"
         android:icon="@drawable/ic_debug"
         android:title="Debug" />-->
